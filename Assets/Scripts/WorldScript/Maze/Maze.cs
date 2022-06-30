@@ -36,14 +36,23 @@ public class Maze : MonoBehaviour
         cells = new MazeCell[size.x, size.z];
         List<MazeCell> activeCells = new List<MazeCell>();
         firstGenerationStep(activeCells);
-       
+        int retreis = 1;
+    
+
         while (activeCells.Count > 0)
         {
-            Debug.Log("Before " + activeCells.Count);
-            nextGenerationStep(activeCells);
-            Debug.Log("After " + activeCells.Count);
+           // Debug.Log("Cell Active " + activeCells.Count);
+            nextGenerationStep(activeCells,retreis);
+          
+           
         }
        
+    }
+
+    public IntVector2 RandomCoordinates{
+        get {
+            return new IntVector2(Random.Range(0, size.x), Random.Range(0, size.z));
+        }
     }
     public IEnumerator Generate()
     {
@@ -51,141 +60,66 @@ public class Maze : MonoBehaviour
         cells = new MazeCell[size.x, size.z];
         List<MazeCell> activeCells = new List<MazeCell>();
           firstGenerationStep(activeCells);
-        //  while (activeCells.Count > 0)
-        //  {
-        //     yield return delay;
-        //    nextGenerationStep(activeCells);
-        //}
 
-        for (int x = 0; x < size.x; x++)
-            for (int z = 0; z < size.z; z++)
-            {
-                //activeCells.Add(createCell(new IntVector2(x, z)));
-                nextGenerationStep(activeCells);
-                yield return delay;
-
-                
-
-
-
-            }
-       
-    }
-    /*  
-   public IEnumerator generate()
-   {
-       WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
-       cells = new MazeCell[size.x, size.z];
-       IntVector2 coordinates = RandomCoordinates;
-       List<MazeCell> activeCells = new List<MazeCell>();
-       //generationFirstStep(activeCells);
-       activeCells.Add(createCell(RandomCoordinates));
-       Debug.Log(activeCells);
-       //while (ContainsCoordinates(coordinates) && getCell(coordinates) == null
-       while (activeCells.Count>0)
-       {
-           yield return delay;
-           //createCell(coordinates);
-           //coordinates += MazeDirections.RandomValue.toIntVector2();
-           // generationNextStep(activeCells);
-           int currentIndex = activeCells.Count - 1;
-           MazeCell currentCell = activeCells[currentIndex];
-           MazeDirection direction = MazeDirections.RandomValue;
-           //Debug.Log(currentCell);
-           IntVector2 coordinatesfinal = RandomCoordinates;
-           if (ContainsCoordinates(coordinatesfinal) && getCell(coordinatesfinal) == null)
-           {
-               activeCells.Add(createCell(coordinatesfinal));
-           }
-           else
-           {
-               activeCells.RemoveAt(currentIndex);
-           }
-       }
-
-       /* switch to select between regulare and random maze.
-       /*for (int x = 0; x < size.x; x++)
-           for (int z = 0; z < size.z; z++)
-           {
-               yield return delay;
-               createCell(new IntVector2(x,z));
-           }
-
-   }
-   */
-    /*get random coordinates*/
-    public IntVector2 RandomCoordinates
-    {
-       get{
-            return new IntVector2(Random.Range(0, size.x), Random.Range(0, size.z));
+        while (activeCells.Count > 0)
+        {
+            yield return delay;
+            //nextGenerationStep(activeCells,retries);
         }
+    
     }
 
+  
     public bool ContainsCoordinates(IntVector2 coordinate)
     {
         return coordinate.x >= 0 && coordinate.x < size.x && coordinate.z >= 0 && coordinate.z < size.z;
     }
-
+    // the first block place in the ground
     private void firstGenerationStep(List<MazeCell> active)
     {
         IntVector2 coord = new IntVector2(0, 0);
         active.Add(createCell(RandomCoordinates));
     }
-
-    private void nextGenerationStep(List<MazeCell> activeCells)
+    // all the next block to create the maze with backtracking
+    private void nextGenerationStep(List<MazeCell> activeCells, int retries)
     {
         int currentIndex = activeCells.Count - 1;
         MazeCell currentCell = activeCells[currentIndex];
-        MazeDirection direction = MazeDirections.RandomValue;
-        Debug.Log(direction);
-        IntVector2 coordinates = currentCell.coordinates + direction.toIntVector2();
-        if (ContainsCoordinates(coordinates) && getCell(coordinates) == null)
+        do
         {
-            activeCells.Add(createCell(coordinates));
-        }
-        else
-        {
-
-            activeCells.RemoveAt(currentIndex);
-        }
-    }
-        /*
-        private void generationFirstStep(List<MazeCell> active)
-        {
-            IntVector2 cord = RandomCoordinates;
-
-            active.Add(createCell(RandomCoordinates));
-            Debug.Log(createCell(RandomCoordinates));
-
-        }
-
-        private void generationNextStep(List<MazeCell> active)
-        {
-            int currentIndex = active.Count - 1;
-            MazeCell currentCell = active[currentIndex];
             MazeDirection direction = MazeDirections.RandomValue;
-            IntVector2 coordinates = currentCell.localCoordinates + direction.toIntVector2();
+            //Debug.Log(direction);
+            IntVector2 coordinates = currentCell.coordinates + direction.toIntVector2();
+
+            Debug.Log(retries);
             if (ContainsCoordinates(coordinates) && getCell(coordinates) == null)
             {
-                active.Add(createCell(coordinates));
+                //Debug.Log(coordinates.x +"&& " +coordinates.z); 
+                activeCells.Add(createCell(coordinates));
+                break;
             }
             else
             {
-                active.RemoveAt(currentIndex);
+                retries--;
+                if (retries == 0) activeCells.RemoveAt(currentIndex);
             }
         }
-        */
+        while (retries >= 0);
+       
+    }
+  
+      
         /*create the cells*/
-     private MazeCell createCell(IntVector2 coordinates)
+     private MazeCell createCell(IntVector2 newcoords)
      {
         MazeCell newCell = Instantiate(cellPrefab) as MazeCell;
-        cells[coordinates.x, coordinates.z] = newCell;
-        newCell.coordinates = coordinates;
-        newCell.name = "Maze Cell " + coordinates.x + ", " + coordinates.z;
+        cells[newcoords.x, newcoords.z] = newCell;
+        newCell.coordinates = newcoords;
+        newCell.name = "Maze Cell " + newcoords.x + ", " + newcoords.z;
         newCell.transform.parent = transform;
         
         //Debug.Log(x * newCell.transform.localScale.x / 2 - sizeX * newCell.transform.localScale.x / 2);
-        newCell.transform.localPosition = new Vector3(coordinates.x* newCell.transform.localScale.x - size.x *newCell.transform.localScale.x  + newCell.transform.localScale.x, 0f, coordinates.z * newCell.transform.localScale.z - size.z * 0);
+        newCell.transform.localPosition = new Vector3(newcoords.x* newCell.transform.localScale.x - size.x *newCell.transform.localScale.x  + newCell.transform.localScale.x, 0f, newcoords.z * newCell.transform.localScale.z - size.z * 0);
         return newCell;
      }
 }
