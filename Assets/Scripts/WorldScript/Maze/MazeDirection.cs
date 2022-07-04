@@ -5,17 +5,28 @@ using UnityEngine;
 
 public enum MazeDirection
 {
-    North,//(0,1)
-    East,//(1,0)
-    South,//(0,-1)
-    West,//(-1,0)
-
+    North,
+    East,
+    South,
+    West
 }
+
 public static class MazeDirections
 {
     public const int count = 4;// how many direcitons
 
 
+    private static MazeDirection[] opposites = {
+        MazeDirection.South,
+        MazeDirection.West,
+        MazeDirection.North,
+        MazeDirection.East
+    };
+
+    public static MazeDirection getOpposite(this MazeDirection direction)
+    {
+        return opposites[(int)direction];
+    }
     public static IntVector2[] vectorsDirection =
     {
         new IntVector2(0,1),//North
@@ -39,5 +50,19 @@ public static class MazeDirections
     {
         return vectorsDirection[(int)direction];
     }
-   
+
+
+    //add the rotations to passages and walls
+    private static Quaternion[] rotations = {
+        Quaternion.identity,
+        Quaternion.Euler(0f, 90f, 0f),
+        Quaternion.Euler(0f, 180f, 0f),
+        Quaternion.Euler(0f, 270f, 0f)
+    };
+
+    public static Quaternion toRotation(this MazeDirection direction)
+    {
+        return rotations[(int)direction];
+    }
+
 }
