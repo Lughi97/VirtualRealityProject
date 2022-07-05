@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Maze mazePrefab;
+    public MazeSpawner maze;
 
-    private Maze mazeInstance;
+    private MazeSpawner mazeInstance;
+
+    public GameObject Ground;
    
     void Start()
     {
@@ -21,13 +23,14 @@ public class GameManager : MonoBehaviour
     private void startGame()
     {
         Debug.Log("StartGame");
-        mazeInstance = Instantiate(mazePrefab) as Maze;
+        mazeInstance = Instantiate(maze) as MazeSpawner;
+        mazeInstance.transform.parent = Ground.transform;
        // mazeInstance.generateGround();
-        StartCoroutine(mazeInstance.Generate());
+        //StartCoroutine(mazeInstance.Generate());
     }
     private void restartGame()
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
         Debug.Log("Restart");
         Destroy(mazeInstance.gameObject);
         startGame();
