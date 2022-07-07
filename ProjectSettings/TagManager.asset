@@ -6,6 +6,7 @@ TagManager:
   tags:
   - world
   - ground
+  - Pillar
   layers:
   - Default
   - TransparentFX

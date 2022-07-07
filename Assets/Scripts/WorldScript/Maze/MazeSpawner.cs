@@ -46,22 +46,22 @@ public class MazeSpawner : MonoBehaviour
                 tmp.transform.parent = transform;
                 if (cell.WallRight)
                 {
-                    tmp = Instantiate(Wall, new Vector3(x + CellWidth / 2, 0, z) + Wall.transform.position, Quaternion.Euler(0, 90, 0)) as GameObject;// right
+                    tmp = Instantiate(Wall, new Vector3(x + CellWidth / 2,Wall.transform.localScale.y / 2, z) + Wall.transform.position, Quaternion.Euler(0, 90, 0)) as GameObject;// right
                     tmp.transform.parent = transform;
                 }
                 if (cell.WallFront)
                 {
-                    tmp = Instantiate(Wall, new Vector3(x, 0, z + CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;// front
+                    tmp = Instantiate(Wall, new Vector3(x, Wall.transform.localScale.y/2, z + CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;// front
                     tmp.transform.parent = transform;
                 }
                 if (cell.WallLeft)
                 {
-                    tmp = Instantiate(Wall, new Vector3(x - CellWidth / 2, 0, z) + Wall.transform.position, Quaternion.Euler(0, 270, 0)) as GameObject;// left
+                    tmp = Instantiate(Wall, new Vector3(x - CellWidth / 2,  Wall.transform.localScale.y / 2, z) + Wall.transform.position, Quaternion.Euler(0, 270, 0)) as GameObject;// left
                     tmp.transform.parent = transform;
                 }
                 if (cell.WallBack)
                 {
-                    tmp = Instantiate(Wall, new Vector3(x, 0, z - CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;// back
+                    tmp = Instantiate(Wall, new Vector3(x,Wall.transform.localScale.y / 2, z - CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;// back
                     tmp.transform.parent = transform;
                 }
                 if (cell.IsGoal && GoalPrefab != null)
@@ -72,13 +72,13 @@ public class MazeSpawner : MonoBehaviour
             }
         if (Pillar != null)
         {
-            for(int row=0; row<Rows;row++)
-                for (int column = 0; column < Columns; column++)
+            for(int row=0; row<=Rows;row++)
+                for (int column = 0; column <= Columns; column++)
                 {
                     float x = column * (CellWidth + (AddGaps ? .2f : 0));
                     float z = row * (CellHeight + (AddGaps ? .2f : 0));
                     GameObject tmp;
-                    tmp = Instantiate(Pillar, new Vector3(x-CellWidth/2, 0, z-CellHeight/2), Pillar.transform.rotation) as GameObject;
+                    tmp = Instantiate(Pillar, new Vector3(x-CellWidth/2,Pillar.transform.localScale.y, z-CellHeight/2), Pillar.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                 }
         }

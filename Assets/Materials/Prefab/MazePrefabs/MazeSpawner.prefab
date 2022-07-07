@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5315826604395541057}
   m_Layer: 0
   m_Name: MazeSpawner
-  m_TagString: Untagged
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,9 +50,9 @@ MonoBehaviour:
   Floor: {fileID: 5164054121804527746, guid: 943796e89660b594697b91f6097b0003, type: 3}
   Wall: {fileID: 4362792659905588399, guid: 7ce49a846a829c14ca2826830c572380, type: 3}
   Pillar: {fileID: 9182407089651191869, guid: 09bb68c84ce9f1042968f031500fb9b9, type: 3}
-  Rows: 10
-  Columns: 10
-  CellWidth: 10
-  CellHeight: 10
+  Rows: 4
+  Columns: 5
+  CellWidth: 20
+  CellHeight: 20
   AddGaps: 0
   GoalPrefab: {fileID: 0}
