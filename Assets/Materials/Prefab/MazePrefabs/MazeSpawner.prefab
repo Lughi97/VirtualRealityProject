@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4924843872442274494
+--- !u!1 &5315826604395541118
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2690677796096772329}
-  - component: {fileID: 2396724667055144278}
+  - component: {fileID: 5315826604395541056}
+  - component: {fileID: 5315826604395541057}
   m_Layer: 0
-  m_Name: MazeGenerator
-  m_TagString: Untagged
+  m_Name: MazeSpawner
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2690677796096772329
+--- !u!4 &5315826604395541056
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4924843872442274494}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 5315826604395541118}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,20 +32,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2396724667055144278
+--- !u!114 &5315826604395541057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4924843872442274494}
+  m_GameObject: {fileID: 5315826604395541118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45252bad868799d4c98548990e25ce45, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d576d0e39410fb47b400fd640ccfab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 2452103226497654200, guid: f4001d55898951445a9f563f08f16d26, type: 3}
-  generationStepDelay: 0.01
-  size:
-    x: 100
-    z: 100
+  Algorithm: 0
+  FullRandom: 1
+  RandomSeed: 12345
+  Floor: {fileID: 5164054121804527746, guid: 943796e89660b594697b91f6097b0003, type: 3}
+  Wall: {fileID: 4362792659905588399, guid: 7ce49a846a829c14ca2826830c572380, type: 3}
+  Pillar: {fileID: 9182407089651191869, guid: 09bb68c84ce9f1042968f031500fb9b9, type: 3}
+  Rows: 4
+  Columns: 5
+  CellWidth: 20
+  CellHeight: 20
+  AddGaps: 0
+  GoalPrefab: {fileID: 0}
