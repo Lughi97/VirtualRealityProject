@@ -4,61 +4,74 @@ using UnityEngine;
 
 public class PlayerWithPhysic : MonoBehaviour
 {
-    //public float speedPlayer=3.0f;
-    public GameObject world;
-    //public float sphereradious= 2.5f;
-    // public float currentPositionY;
-    // private float initialPositionY;
+    public float TopXZspeed=30.0f;
+    public float TopYspeed = -50f;
+    public float force = 10f;
+    
+    private Vector3 pos;
+    private RotationWorld rotation;
+    [SerializeField] private Vector2 movementInput;
+    
     Rigidbody rbPlayer;
+    
     // Start is called before the first frame update
     void Start()
     {
         rbPlayer = this.GetComponent<Rigidbody>();
-        //initialPositionY = transform.position.y + sphereradious;
-        //currentPositionY = transform.position.y;
+   
+    }
+    private void Update()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        movementInput = new Vector2(moveHorizontal, moveVertical);
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        /*This is the movement of the player with Physic!
-       
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 playerMovement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-
-        if ( rbPlayer.velocity.magnitude<= 20.0f)
+        rbPlayer.AddForce(new Vector3(movementInput.x, 0, movementInput.y) * force);
+        clampVelocity();
+    }
+    private void clampVelocity()
+    {
+        if (rbPlayer.velocity.y < TopYspeed)
+            rbPlayer.velocity = new Vector3(rbPlayer.velocity.x, TopYspeed, rbPlayer.velocity.z);
+        Vector2 tempXZvel = new Vector2(rbPlayer.velocity.x, rbPlayer.velocity.z);
+        if (tempXZvel.magnitude > TopXZspeed)
         {
-        Debug.Log(rbPlayer.velocity.magnitude);
-        rbPlayer.AddForce(playerMovement * speedPlayer);
-         }
-         */
-     
+            tempXZvel = tempXZvel.normalized * TopXZspeed;
+            rbPlayer.velocity = new Vector3(tempXZvel.x, rbPlayer.velocity.y, tempXZvel.y);
+        }
+        
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Floor")
+        foreach (ContactPoint contact in collision.contacts)
         {
-            Debug.Log("hello");
-            transform.parent =world.transform ;
-        }
-        if (collision.gameObject.tag == "Pillar")
-        {
-            Debug.Log("PILLAR");
-            Vector3 force= new Vector3(0f/*Random.Range(1000f,2000f)*/, -5000f, Random.Range(1000f, 2000f));
-            rbPlayer.AddForce(force);
+           // Debug.Log(contact.normal);
 
-            Debug.Log(force);
+
+            if (collision.gameObject.tag == "Pillar")
+            {
+                Debug.Log("PILLAR");
+                //Vector3 force= new Vector3(Random.Range(1000f,2000f), 0f, Random.Range(1000f, 2000f));
+
+                float force = Random.Range(3500f, 7500f);
+
+                rbPlayer.AddForce(force * contact.normal);
+               // Debug.Log(force * contact.normal);
+               
+            }
+            if (collision.gameObject.tag == "Wall")
+            {
+                Debug.Log("WALL");
+            }
         }
+        
     }
-    // private void OnTriggerExit(Collider other)
-    //{
-    //  if (other.gameObject.tag == "ground")
-    //    transform.parent = null;
-    //}
+
 
 
 }

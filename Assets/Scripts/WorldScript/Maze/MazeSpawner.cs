@@ -82,5 +82,13 @@ public class MazeSpawner : MonoBehaviour
                     tmp.transform.parent = transform;
                 }
         }
+        if (GoalPrefab != null)
+        {
+            GameObject tmp;
+            float x = Columns * (CellWidth + (AddGaps ? .2f : 0));
+            float z = Rows * (CellHeight + (AddGaps ? .2f : 0));
+            tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0, z - CellHeight), GoalPrefab.transform.rotation)as GameObject;
+            tmp.transform.parent = transform;
+        }
     }
 }

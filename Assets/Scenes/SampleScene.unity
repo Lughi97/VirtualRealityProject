@@ -313,8 +313,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407004586}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0.05
+  m_Mass: 10
+  m_Drag: 0
   m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -411,7 +411,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b07b399ace8c6ab43b60b4b67c045f12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TopXZspeed: 10
+  TopYspeed: -50
+  force: 30
   world: {fileID: 431740438}
+  movementInput: {x: 0, y: 0}
 --- !u!1 &410825755
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,8 +921,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 50
-  minRotation: -45
-  maxRotation: 45
+  minRotation: -20
+  maxRotation: 20
 --- !u!1 &1289341855
 GameObject:
   m_ObjectHideFlags: 0
