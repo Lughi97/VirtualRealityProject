@@ -36,8 +36,7 @@ public class GameManager : MonoBehaviour
       //  Debug.Log(mazeInstance.transform.position);
         Ground.transform.position = new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5);
         mazeInstance.transform.parent = Ground.transform;
-     
-        Player.transform.position = new Vector3(mazeInstance.transform.position.x,1, mazeInstance.transform.position.z);
+        Player.transform.position = new Vector3(mazeInstance.transform.position.x,2, mazeInstance.transform.position.z);
         Player.transform.parent = Ground.transform;
     }
 }

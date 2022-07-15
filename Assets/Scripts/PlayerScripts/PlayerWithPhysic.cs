@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerWithPhysic : MonoBehaviour
 {
+    // add movement to player
     public float TopXZspeed=30.0f;
     public float TopYspeed = -50f;
     public float force = 10f;
-    
     private Vector3 pos;
     private RotationWorld rotation;
     [SerializeField] private Vector2 movementInput;
+    //[SerializeField] private Vector3 forceSphere;
     
     Rigidbody rbPlayer;
     
@@ -25,10 +26,14 @@ public class PlayerWithPhysic : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         movementInput = new Vector2(moveHorizontal, moveVertical);
+        
+        Debug.DrawLine(rbPlayer.velocity.normalized,rbPlayer.velocity.normalized+new Vector3(1,1,1));
     }
     // Update is called once per frame
     void FixedUpdate()
     {
+        
+        //Debug.Log(forceSphere.magnitude);
         rbPlayer.AddForce(new Vector3(movementInput.x, 0, movementInput.y) * force);
         clampVelocity();
     }
@@ -48,20 +53,16 @@ public class PlayerWithPhysic : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        
         foreach (ContactPoint contact in collision.contacts)
         {
            // Debug.Log(contact.normal);
-
-
             if (collision.gameObject.tag == "Pillar")
             {
                 Debug.Log("PILLAR");
-                //Vector3 force= new Vector3(Random.Range(1000f,2000f), 0f, Random.Range(1000f, 2000f));
-
-                float force = Random.Range(3500f, 7500f);
-
-                rbPlayer.AddForce(force * contact.normal);
-               // Debug.Log(force * contact.normal);
+                rbPlayer.AddForce(currentForce().magnitude * contact.normal,ForceMode.Impulse);
+                // Debug.Log(force * contact.normal);
+                collision.gameObject.GetComponent<ParticleSystem>().Play();
                
             }
             if (collision.gameObject.tag == "Wall")
@@ -71,7 +72,14 @@ public class PlayerWithPhysic : MonoBehaviour
         }
         
     }
-
-
+    private void OnTriggerEnter(Collider other)
+    {
+        //if (other.gameObject.name == "Goal") Debug.Log("YOU WIN");
+    }
+    // add force for collision
+    private Vector3 currentForce()
+    {
+        return rbPlayer.mass * (rbPlayer.velocity/0.5f);
+    }
 
 }

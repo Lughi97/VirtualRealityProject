@@ -80,5 +80,6 @@ public class RecursiveMazeAlgorithm : MazeGenerator
                 }
             }
         } while (movesAvailableCount > 0);
+      
     }
 }
