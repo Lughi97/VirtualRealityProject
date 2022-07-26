@@ -11,6 +11,8 @@ public class PlayerWithPhysic : MonoBehaviour
     private Vector3 pos;
     private RotationWorld rotation;
     [SerializeField] private Vector2 movementInput;
+    public bool endMaze = false;
+    public bool plDeath = false;
     //[SerializeField] private Vector3 forceSphere;
     
     Rigidbody rbPlayer;
@@ -69,12 +71,23 @@ public class PlayerWithPhysic : MonoBehaviour
             {
                 Debug.Log("WALL");
             }
+
+
+            if (collision.gameObject.tag == "Hole")
+            {
+                Debug.Log("LOSE LIFE");
+                playerDestruction();
+            }
         }
         
+      //v
     }
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.gameObject.name == "Goal") Debug.Log("YOU WIN");
+        if (other.gameObject.tag == "Goal") {
+            Debug.Log("YOU WIN");
+            playerDestruction();
+            };
     }
     // add force for collision
     private Vector3 currentForce()
@@ -82,4 +95,8 @@ public class PlayerWithPhysic : MonoBehaviour
         return rbPlayer.mass * (rbPlayer.velocity/0.5f);
     }
 
+    private void playerDestruction()
+    {
+        Destroy(this.gameObject);
+    }
 }

@@ -7,19 +7,38 @@ public class FollowPlayer : MonoBehaviour
     public GameObject player;
 
     private Vector3 offset;
-    private static float height=30f;
+    private  float height=5f;
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.transform.position = new Vector3(player.transform.position.x,height,player.transform.position.z);
-      
-        offset = transform.position - player.transform.position;
+        if (player != null){
+            player = GameObject.Find("Player(Clone)");
+            offset = transform.position - player.transform.position;
+            transform.position = new Vector3(player.transform.position.x, height + offset.y, player.transform.position.z);
+        }
+        
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
+        if (player == null)
+        {
+            player = GameObject.Find("Player(Clone)");
+            if (player != null)
+            {
+                offset = transform.position - player.transform.position;
+                transform.position = new Vector3(player.transform.position.x, height + offset.y, player.transform.position.z);
+            }
+            
 
-        transform.position = player.transform.position + offset;
+        }
+        else
+        {
+
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y + height + offset.y, player.transform.position.z);
+
+        }
+
     }
 }
