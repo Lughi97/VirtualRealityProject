@@ -113,7 +113,7 @@ public class MazeSpawner : MonoBehaviour
     //add black holes to the scene that kills the player
     public void placeBlackHoles(float x, float z,GameObject floorTmp)
     {
-        int side = Random.Range(0,3);
+        int side = Random.Range(0,4);
         int random=Random.Range(1, 100);
         GameObject tmp;
         if (BlackHoles != null && x!=0 && z!=0)
@@ -121,28 +121,30 @@ public class MazeSpawner : MonoBehaviour
            
             if (random % 5 == 0)
             {
-                tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                tmp.transform.parent = floorTmp.transform;
-                // switch (side)
-                //  {
-                //    case 0:
-                //         tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0, floorTmp.transform.position.z/2), BlackHoles.transform.rotation) as GameObject;
-                //         tmp.transform.parent = floorTmp.transform;
-                //        break;
-                //    case 1:
-                //         tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0, floorTmp.transform.position.z/2), BlackHoles.transform.rotation) as GameObject;
-                //        tmp.transform.parent = floorTmp.transform;
-                //        break;
-                //    case 2:
-                //         tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0, floorTmp.transform.position.z/2), BlackHoles.transform.rotation) as GameObject;
-                //         tmp.transform.parent = floorTmp.transform;
-                //          break;
-                //     case 3:
-                //         tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0, floorTmp.transform.position.z/2), BlackHoles.transform.rotation) as GameObject;
-                //         tmp.transform.parent = floorTmp.transform;
-                //          break;
+                 switch (side)
+                  {
+                    case 0:
+                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x + floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z + floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                        break;
+                    case 1:
+                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x - floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z + floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                        break;
+                   case 2:
+                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x - floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z - floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                        break;
+                     case 3:
+                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x + floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z - floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                        break;
+                    case 4:
+                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0f, floorTmp.transform.position.z ), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                        break;
 
-                //  }
+                }
 
 
             }
