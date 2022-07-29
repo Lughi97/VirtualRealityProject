@@ -9,39 +9,84 @@ public class GameManager : MonoBehaviour
     private MazeSpawner mazeInstance;
 
     public GameObject Ground;
+    private GameObject tempGround;
     public GameObject Player;
-    private int setUpTime = 1;
+    public GameObject tempPlayer;
+
+    public Camera playerCamera;
+    [SerializeField]public static GameManager instance = null;
+    private void Awake()
+    {
+        if(instance== null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
     void Start()
     {
-        startGame();
+        setUpMazeLevel();
+  
     }
 
    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) restartGame();
+        if (tempPlayer == null)
+        {
+            tempPlayer = GameObject.Find("Player(Clone)");
+        }
+        else
+        {
+            resetGround();
+        }
+    }
+
+
+    public void setUpMazeLevel()// here we build the maze in base of the level (to expand)
+    {
+        buildmaze();
+        addPlayer();
     }
 
     private void restartGame()
     {
-        //StopAllCoroutines();
+        
         Debug.Log("Restart");
         Destroy(mazeInstance.gameObject);
-        startGame();
+        Destroy(tempGround);
+        Destroy(tempPlayer);
+        setUpMazeLevel();
     }
-    private void startGame()
+    private void buildmaze()
     {
         Debug.Log("StartGame");
         mazeInstance = Instantiate(maze) as MazeSpawner;
+        tempGround = Instantiate(Ground, new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5), Quaternion.Euler(0, 0, 0)) as GameObject;
+        mazeInstance.transform.parent = tempGround.transform;
+        playerCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
 
-        Debug.Log(mazeInstance.transform.position);
-        Ground.transform.position = new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5);
-        mazeInstance.transform.parent = Ground.transform;
-     
-        Player.transform.position = new Vector3(mazeInstance.transform.position.x,1, mazeInstance.transform.position.z);
-        Player.transform.parent = Ground.transform;
-
-        // mazeInstance.generateGround();
-        //StartCoroutine(mazeInstance.Generate());
     }
+
+    public void addPlayer()
+    {
+        tempPlayer = Instantiate(Player, new Vector3(mazeInstance.transform.position.x, 2, mazeInstance.transform.position.z), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
+        tempPlayer.transform.parent = tempGround.transform;
+    }
+    
+
+    public void resetGround()
+    {
+       
+        if (tempPlayer.activeSelf == false)
+        {
+            tempGround.GetComponent<RotationWorld>().enabled = false;
+            Debug.Log("HERE");
+        }
+    }
+
+    
+    //private void nextLevel() { };
+   // private void returnMenu() { };
 }

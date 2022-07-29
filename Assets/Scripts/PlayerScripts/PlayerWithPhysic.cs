@@ -4,61 +4,93 @@ using UnityEngine;
 
 public class PlayerWithPhysic : MonoBehaviour
 {
-    //public float speedPlayer=3.0f;
-    public GameObject world;
-    //public float sphereradious= 2.5f;
-    // public float currentPositionY;
-    // private float initialPositionY;
+    // add movement to player
+    public float TopXZspeed=30.0f;
+    public float TopYspeed = -50f;
+    public float force = 10f;
+    private Vector3 pos;
+    private RotationWorld rotation;
+    [SerializeField] private Vector2 movementInput;
+    public bool endMaze = false;
+    public bool plDeath = false;
+    //[SerializeField] private Vector3 forceSphere;
+    
     Rigidbody rbPlayer;
+    
     // Start is called before the first frame update
     void Start()
     {
         rbPlayer = this.GetComponent<Rigidbody>();
-        //initialPositionY = transform.position.y + sphereradious;
-        //currentPositionY = transform.position.y;
+   
+    }
+    private void Update()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+        movementInput = new Vector2(moveHorizontal, moveVertical);
+        
+        Debug.DrawLine(rbPlayer.velocity.normalized,rbPlayer.velocity.normalized+new Vector3(1,1,1));
     }
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        /*This is the movement of the player with Physic!
-       
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 playerMovement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-
-        if ( rbPlayer.velocity.magnitude<= 20.0f)
+        
+        //Debug.Log(forceSphere.magnitude);
+        rbPlayer.AddForce(new Vector3(movementInput.x, 0, movementInput.y) * force);
+        clampVelocity();
+    }
+    private void clampVelocity()
+    {
+        if (rbPlayer.velocity.y < TopYspeed)
+            rbPlayer.velocity = new Vector3(rbPlayer.velocity.x, TopYspeed, rbPlayer.velocity.z);
+        Vector2 tempXZvel = new Vector2(rbPlayer.velocity.x, rbPlayer.velocity.z);
+        if (tempXZvel.magnitude > TopXZspeed)
         {
-        Debug.Log(rbPlayer.velocity.magnitude);
-        rbPlayer.AddForce(playerMovement * speedPlayer);
-         }
-         */
-     
+            tempXZvel = tempXZvel.normalized * TopXZspeed;
+            rbPlayer.velocity = new Vector3(tempXZvel.x, rbPlayer.velocity.y, tempXZvel.y);
+        }
+        
+
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.name == "Floor")
+    {        
+        foreach (ContactPoint contact in collision.contacts)
         {
-            Debug.Log("hello");
-            transform.parent =world.transform ;
+            if (collision.gameObject.tag == "Pillar")
+            {
+                Debug.Log("PILLAR");
+                rbPlayer.AddForce(currentForce().magnitude * contact.normal,ForceMode.Impulse);
+               
+                collision.gameObject.GetComponent<ParticleSystem>().Play();
+               
+            }
+            if (collision.gameObject.tag == "Wall")
+            {
+                Debug.Log("WALL");
+            }
+            if (collision.gameObject.tag == "Hole")
+            {
+                Debug.Log("LOSE LIFE");
+                hidePlayer();
+            }
         }
-        if (collision.gameObject.tag == "Pillar")
-        {
-            Debug.Log("PILLAR");
-            Vector3 force= new Vector3(0f/*Random.Range(1000f,2000f)*/, -5000f, Random.Range(1000f, 2000f));
-            rbPlayer.AddForce(force);
 
-            Debug.Log(force);
-        }
     }
-    // private void OnTriggerExit(Collider other)
-    //{
-    //  if (other.gameObject.tag == "ground")
-    //    transform.parent = null;
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Goal") {
+            Debug.Log("YOU WIN");
+            hidePlayer();
+            };
+    }
+    private Vector3 currentForce()
+    {
+        return rbPlayer.mass * (rbPlayer.velocity/0.5f);
+    }
 
-
+    private void hidePlayer()
+    {
+        this.gameObject.SetActive(false);
+    }
 }
