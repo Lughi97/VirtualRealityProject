@@ -54,16 +54,14 @@ public class PlayerWithPhysic : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
-        
+    {        
         foreach (ContactPoint contact in collision.contacts)
         {
-           // Debug.Log(contact.normal);
             if (collision.gameObject.tag == "Pillar")
             {
                 Debug.Log("PILLAR");
                 rbPlayer.AddForce(currentForce().magnitude * contact.normal,ForceMode.Impulse);
-                // Debug.Log(force * contact.normal);
+               
                 collision.gameObject.GetComponent<ParticleSystem>().Play();
                
             }
@@ -71,32 +69,28 @@ public class PlayerWithPhysic : MonoBehaviour
             {
                 Debug.Log("WALL");
             }
-
-
             if (collision.gameObject.tag == "Hole")
             {
                 Debug.Log("LOSE LIFE");
-                playerDestruction();
+                hidePlayer();
             }
         }
-        
-      //v
+
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Goal") {
             Debug.Log("YOU WIN");
-            playerDestruction();
+            hidePlayer();
             };
     }
-    // add force for collision
     private Vector3 currentForce()
     {
         return rbPlayer.mass * (rbPlayer.velocity/0.5f);
     }
 
-    private void playerDestruction()
+    private void hidePlayer()
     {
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }

@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
     private MazeSpawner mazeInstance;
 
     public GameObject Ground;
+    private GameObject tempGround;
     public GameObject Player;
     public GameObject tempPlayer;
+
+    public Camera playerCamera;
     [SerializeField]public static GameManager instance = null;
     private void Awake()
     {
@@ -22,7 +25,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        startGame();
+        setUpMazeLevel();
   
     }
 
@@ -40,44 +43,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    public void setUpMazeLevel()// here we build the maze in base of the level (to expand)
+    {
+        buildmaze();
+        addPlayer();
+    }
+
     private void restartGame()
     {
-        //StopAllCoroutines();
+        
         Debug.Log("Restart");
         Destroy(mazeInstance.gameObject);
-        startGame();
+        Destroy(tempGround);
+        Destroy(tempPlayer);
+        setUpMazeLevel();
     }
-    private void startGame()
+    private void buildmaze()
     {
         Debug.Log("StartGame");
         mazeInstance = Instantiate(maze) as MazeSpawner;
-       
-      //  Debug.Log(mazeInstance.transform.position);
-        Ground.transform.position = new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5);
-        Ground.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        mazeInstance.transform.parent = Ground.transform;
-        addPlayer();
+        tempGround = Instantiate(Ground, new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5), Quaternion.Euler(0, 0, 0)) as GameObject;
+        mazeInstance.transform.parent = tempGround.transform;
+        playerCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
 
     }
 
     public void addPlayer()
     {
         tempPlayer = Instantiate(Player, new Vector3(mazeInstance.transform.position.x, 2, mazeInstance.transform.position.z), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
-        tempPlayer.transform.parent = Ground.transform;
+        tempPlayer.transform.parent = tempGround.transform;
     }
-    //if(player.GetComponent<PlayerWithPhysic>().endMaze==true || player.GetComponent<PlayerWithPhysic>().plDeath == true)
-    //    {
-      //      player = null;
-        //}
+    
 
     public void resetGround()
     {
-        Debug.Log("HERE");
-        if (tempPlayer.GetComponent<PlayerWithPhysic>().endMaze == true|| tempPlayer.GetComponent<PlayerWithPhysic>().plDeath == true)
+       
+        if (tempPlayer.activeSelf == false)
         {
-            Ground.GetComponent<RotationWorld>().turnSpeed = 0f;
+            tempGround.GetComponent<RotationWorld>().enabled = false;
+            Debug.Log("HERE");
         }
     }
+
+    
     //private void nextLevel() { };
    // private void returnMenu() { };
 }
