@@ -80,7 +80,7 @@ public class MazeSpawner : MonoBehaviour
                     float x = column * (CellWidth + (AddGaps ? .2f : 0));
                     float z = row * (CellHeight + (AddGaps ? .2f : 0));
                     GameObject tmp;
-                    tmp = Instantiate(Pillar, new Vector3(x-CellWidth/2,Pillar.transform.localScale.y, z-CellHeight/2), Pillar.transform.rotation) as GameObject;
+                    tmp = Instantiate(Pillar, new Vector3(x-CellWidth/2,Pillar.transform.localPosition.y, z-CellHeight/2), Pillar.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                 }
         }

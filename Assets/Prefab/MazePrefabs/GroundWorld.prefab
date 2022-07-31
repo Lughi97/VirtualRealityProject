@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 50
-  minRotation: -25
-  maxRotation: 25
+  minRotation: -20
+  maxRotation: 20
