@@ -5,7 +5,7 @@ using UnityEngine;
 public class PillarEffect : MonoBehaviour
 {
    [SerializeField] private Animator pillarAnimator;
-    [SerializeField] private string effect = "BouncyPillar";
+   [SerializeField] private string effect = "BouncyPillar";
     // Start is called before the first frame update
     void Start()
     {

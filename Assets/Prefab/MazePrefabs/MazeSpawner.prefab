@@ -51,8 +51,11 @@ MonoBehaviour:
   Wall: {fileID: 4362792659905588399, guid: 7ce49a846a829c14ca2826830c572380, type: 3}
   Pillar: {fileID: 8888105632888367786, guid: a057a8b69c469a14da097b18996f46b6, type: 3}
   BlackHoles: {fileID: 4974153485461861222, guid: ce6f3b004430d1144a34dd023b6f5316, type: 3}
-  Rows: 3
-  Columns: 3
+  collectable:
+  - {fileID: 9119212113294378889, guid: 5c2e7288f244bf548869c47c1fb30e6a, type: 3}
+  - {fileID: 7455643766891513403, guid: abe2a8955c957ec4ca7f35e6b6176544, type: 3}
+  Rows: 5
+  Columns: 5
   CellWidth: 20
   CellHeight: 20
   AddGaps: 0
