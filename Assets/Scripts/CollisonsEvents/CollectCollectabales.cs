@@ -5,9 +5,9 @@ using UnityEngine;
 
 public enum TypeScore
 {
-    coinStar,
-    coin,
-    star,
+    bronze,
+    silver,
+    gold,
 
 }
 public class CollectCollectabales : MonoBehaviour
@@ -15,6 +15,7 @@ public class CollectCollectabales : MonoBehaviour
 
     public TypeScore typeScore;
     public int contentScore;
+   
     /* public int ContentScore
       {
           get { return contentScore; }
@@ -34,14 +35,14 @@ public class CollectCollectabales : MonoBehaviour
     {
         switch (typeScore)
         {
-            case TypeScore.coin:
-                contentScore = 10;
+            case TypeScore.bronze:
+                contentScore = 12;
                 break;
-            case TypeScore.star:
-                contentScore = 30;
+            case TypeScore.silver:
+                contentScore = 25;
                 break;
-            case TypeScore.coinStar:
-                contentScore = 20;
+            case TypeScore.gold:
+                contentScore = 50;
                 break;
 
         }
@@ -51,13 +52,17 @@ public class CollectCollectabales : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             sendScoreToSystem();
+
             this.gameObject.SetActive(false);
+            ScoreCurrentLevel.instance.AddCoin(this);
         }
     }
 
     public void sendScoreToSystem()
     {
         Debug.Log(contentScore);
+        
+        
     }
 
 

@@ -161,20 +161,33 @@ public class MazeSpawner : MonoBehaviour
     }
 
     private void placeCollectables(float x,float z, GameObject floorTmp) {
-        int random = Random.Range(1, 100);
-        int randomCollectable = Random.Range(0, 2);
-        if (collectable != null  && x != 0 && z != 0 && random%2==0)
+        int chance = Random.Range(1, 20);
+        int randomCollectable = Random.Range(0, 3);
+        if (collectable != null  && x != 0 && z != 0)
         {
             
             GameObject tmp;
             switch(randomCollectable){
                case 0:
-                    tmp = Instantiate(collectable[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                    tmp.transform.parent = floorTmp.transform;
+                    if (chance % 2 == 0)
+                    {
+                        tmp = Instantiate(collectable[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                    }
                     break;
                 case 1:
-                    tmp = Instantiate(collectable[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                    tmp.transform.parent = floorTmp.transform;
+                    if (chance % 3 == 0)
+                    {
+                        tmp = Instantiate(collectable[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                    }
+                    break;
+                case 2:
+                    if (chance %  5== 0)
+                    {
+                        tmp = Instantiate(collectable[2], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmp.transform.parent = floorTmp.transform;
+                    }
                     break;
 
 

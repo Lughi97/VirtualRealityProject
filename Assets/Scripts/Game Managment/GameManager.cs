@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private GameObject tempGround;
     public GameObject Player;
     public GameObject tempPlayer;
+    public bool restartLevel = false;
 
     public Camera playerCamera;
     [SerializeField]public static GameManager instance = null;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public void setUpMazeLevel()// here we build the maze in base of the level (to expand)
     {
+        
         buildmaze();
         addPlayer();
     }
@@ -54,10 +56,17 @@ public class GameManager : MonoBehaviour
     {
         
         Debug.Log("Restart");
+        restartLevel = true;
+        StartCoroutine(Restart());
         Destroy(mazeInstance.gameObject);
         Destroy(tempGround);
         Destroy(tempPlayer);
         setUpMazeLevel();
+    }
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(1f);
+        restartLevel = false;
     }
     private void buildmaze()
     {
@@ -66,7 +75,7 @@ public class GameManager : MonoBehaviour
         tempGround = Instantiate(Ground, new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5), Quaternion.Euler(0, 0, 0)) as GameObject;
         mazeInstance.transform.parent = tempGround.transform;
         playerCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
-
+       
     }
 
     public void addPlayer()
