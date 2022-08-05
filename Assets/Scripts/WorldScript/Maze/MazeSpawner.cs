@@ -6,7 +6,8 @@ public class MazeSpawner : MonoBehaviour
 {
     public enum MazeGenerationAlgorithm
     {
-        PureRecursive
+        PureRecursive,
+        RecursiveBacktraking
     }
     public MazeGenerationAlgorithm Algorithm = MazeGenerationAlgorithm.PureRecursive;
     public bool FullRandom = false;
@@ -16,6 +17,7 @@ public class MazeSpawner : MonoBehaviour
     public GameObject Pillar = null;
     public GameObject BlackHoles = null;
     public GameObject [] collectable= null;
+    public GameObject[] creates = null;
     public int Rows = 5;
     public int Columns = 5;
     public float CellWidth = 5;
@@ -36,6 +38,9 @@ public class MazeSpawner : MonoBehaviour
         {
             case MazeGenerationAlgorithm.PureRecursive:
                 mMazeGenerator = new RecursiveMazeAlgorithm(Rows, Columns);
+                break;
+            case MazeGenerationAlgorithm.RecursiveBacktraking:
+                mMazeGenerator = new RecursiveBacktraking(Rows, Columns);
                 break;
         }
         mMazeGenerator.GenerateMaze();
@@ -162,33 +167,42 @@ public class MazeSpawner : MonoBehaviour
 
     private void placeCollectables(float x,float z, GameObject floorTmp) {
         int chance = Random.Range(1, 20);
-        int randomCollectable = Random.Range(0, 3);
+        int randomCollectable = Random.Range(0, 4);
         if (collectable != null  && x != 0 && z != 0)
         {
             
-            GameObject tmp;
+            GameObject tmpCoin;
+            GameObject tmpCreate;
             switch(randomCollectable){
                case 0:
                     if (chance % 2 == 0)
                     {
-                        tmp = Instantiate(collectable[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
+                        tmpCoin = Instantiate(collectable[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmpCoin.transform.parent = floorTmp.transform;
                     }
                     break;
                 case 1:
                     if (chance % 3 == 0)
                     {
-                        tmp = Instantiate(collectable[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
+                        tmpCoin = Instantiate(collectable[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmpCoin.transform.parent = floorTmp.transform;
                     }
                     break;
                 case 2:
                     if (chance %  5== 0)
                     {
-                        tmp = Instantiate(collectable[2], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
+                        tmpCoin = Instantiate(collectable[2], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmpCoin.transform.parent = floorTmp.transform;
                     }
                     break;
+                case 3:
+                    if (chance % 3 == 0)
+                    {
+                        tmpCreate = Instantiate(creates[0], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
+                        tmpCreate.transform.parent = floorTmp.transform;
+                    }
+                    break;
+               
 
 
             }

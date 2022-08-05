@@ -44,7 +44,7 @@ public abstract class MazeGenerator{
         }
         else
         {
-            Debug.Log(row + " " + column);
+            Debug.LogError(row + " " + column);
             throw new System.ArgumentOutOfRangeException();
         }
     }

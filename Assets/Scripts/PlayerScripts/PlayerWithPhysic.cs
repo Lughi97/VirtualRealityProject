@@ -62,7 +62,7 @@ public class PlayerWithPhysic : MonoBehaviour
                 Debug.Log("PILLAR");
                 rbPlayer.AddForce(currentForce().magnitude * contact.normal,ForceMode.Impulse);
                
-                collision.gameObject.GetComponent<ParticleSystem>().Play();
+               // collision.gameObject.GetComponent<ParticleSystem>().Play();
                
             }
             if (collision.gameObject.tag == "Wall")

@@ -20,6 +20,7 @@ public class ScoreCurrentLevel : MonoBehaviour
     [SerializeField] private CanvasGroup coinCanvas;
    // private bool fadeIn = false;
     public bool fadeOut = false;
+    public Transform coinBronze;
     private void Awake()
     {
         instance = this;    
@@ -28,6 +29,10 @@ public class ScoreCurrentLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+         coinBronze = coinCanvas.gameObject.transform.GetChild(0).transform.GetChild(0);
+       Color currentCoin = coinBronze.GetComponent<MeshRenderer>().material.color;
+        currentCoin.a = 0;
+        coinBronze.GetComponent<MeshRenderer>().material.color = currentCoin;
         coinCanvas.alpha = 0;  
         bronzeText.text = bronzeCounter.ToString();
             silverText.text = silverCounter.ToString();
@@ -55,6 +60,9 @@ public class ScoreCurrentLevel : MonoBehaviour
     {
         Debug.Log(coin.typeScore);
         coinCanvas.alpha = 1;
+        Color currentCoin = coinBronze.GetComponent<MeshRenderer>().material.color;
+        currentCoin.a = 1;
+        coinBronze.GetComponent<MeshRenderer>().material.color = currentCoin;
         fadeOut = true;
         if (CR_running)
         {
@@ -89,10 +97,15 @@ public class ScoreCurrentLevel : MonoBehaviour
         CR_running = true;
         while (fadeOut)
         {
-            if (coinCanvas.alpha >= 0)
+            if (coinCanvas.alpha >= 0 && coinBronze.GetComponent<MeshRenderer>().material.color.a >= 0)
+            {
                 coinCanvas.alpha -= 0.05f;
-            if (coinCanvas.alpha == 0) fadeOut = false;
-            yield return new WaitForSeconds(0.05f);
+                Color currentCOlor = coinBronze.GetComponent<MeshRenderer>().material.color;
+                currentCOlor.a -= 0.05f;
+                coinBronze.GetComponent<MeshRenderer>().material.color = currentCOlor;
+            }
+            if (coinCanvas.alpha == 0 && coinBronze.GetComponent<MeshRenderer>().material.color.a == 0) fadeOut = false;
+            yield return new WaitForSeconds(0.5f);
             
            
         }
