@@ -8,6 +8,9 @@ TagManager:
   - ground
   - Pillar
   - Wall
+  - Hole
+  - Goal
+  - Floor
   layers:
   - Default
   - TransparentFX

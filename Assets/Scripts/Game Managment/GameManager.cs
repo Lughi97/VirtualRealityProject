@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log("Restart");
         restartLevel = true;
+        ScoringSystem.instance.resetCurrentLevelScore();
         StartCoroutine(Restart());
         Destroy(mazeInstance.gameObject);
         Destroy(tempGround);
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour
         if (tempPlayer.activeSelf == false)
         {
             tempGround.GetComponent<RotationWorld>().enabled = false;
-            Debug.Log("HERE");
+          //  Debug.Log("HERE");
         }
     }
 

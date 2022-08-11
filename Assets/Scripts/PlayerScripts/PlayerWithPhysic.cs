@@ -29,7 +29,7 @@ public class PlayerWithPhysic : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
         movementInput = new Vector2(moveHorizontal, moveVertical);
         
-        Debug.DrawLine(rbPlayer.velocity.normalized,rbPlayer.velocity.normalized+new Vector3(1,1,1));
+        //Debug.DrawLine(rbPlayer.velocity.normalized,rbPlayer.velocity.normalized+new Vector3(1,1,1));
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -59,7 +59,7 @@ public class PlayerWithPhysic : MonoBehaviour
         {
             if (collision.gameObject.tag == "Pillar")
             {
-                Debug.Log("PILLAR");
+                //Debug.Log("PILLAR");
                 rbPlayer.AddForce(currentForce().magnitude * contact.normal,ForceMode.Impulse);
                
                // collision.gameObject.GetComponent<ParticleSystem>().Play();
@@ -67,11 +67,11 @@ public class PlayerWithPhysic : MonoBehaviour
             }
             if (collision.gameObject.tag == "Wall")
             {
-                Debug.Log("WALL");
+              //  Debug.Log("WALL");
             }
             if (collision.gameObject.tag == "Hole")
             {
-                Debug.Log("LOSE LIFE");
+               // Debug.Log("LOSE LIFE");
                 hidePlayer();
             }
         }
@@ -81,12 +81,13 @@ public class PlayerWithPhysic : MonoBehaviour
     {
         if (other.gameObject.tag == "Goal") {
             Debug.Log("YOU WIN");
+            ScoreCurrentLevel.instance.CalculateCoins();
             hidePlayer();
             };
     }
     private Vector3 currentForce()
     {
-        return rbPlayer.mass * (rbPlayer.velocity/0.5f);
+        return rbPlayer.mass * (rbPlayer.velocity);
     }
 
     private void hidePlayer()

@@ -15,6 +15,7 @@ public class CollectCollectabales : MonoBehaviour
 
     public TypeScore typeScore;
     public int contentScore;
+    public bool bounce = false;
    
     /* public int ContentScore
       {
@@ -36,16 +37,21 @@ public class CollectCollectabales : MonoBehaviour
         switch (typeScore)
         {
             case TypeScore.bronze:
-                contentScore = 12;
+                contentScore = 3;
                 break;
             case TypeScore.silver:
-                contentScore = 25;
+                contentScore = 6;
                 break;
             case TypeScore.gold:
-                contentScore = 50;
+                contentScore = 9;
                 break;
 
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (transform.position.y < -50) Destroy(this.gameObject);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -56,14 +62,67 @@ public class CollectCollectabales : MonoBehaviour
             this.gameObject.SetActive(false);
             ScoreCurrentLevel.instance.AddCoin(this);
         }
+      
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Floor")
+        {
+           // Debug.Log("hitFloor");
+
+
+            Rigidbody rbCoin = this.gameObject.GetComponent<Rigidbody>();
+            if (!bounce)
+            {
+
+               // Debug.Log("AddForce");
+                rbCoin.AddForce(new Vector3(0, 10, 0));
+                bounce = true;
+               
+
+
+            }
+            else
+            {
+                StartCoroutine(ResetTrigger());
+
+            }
+
+
+        }
+        if (collision.gameObject.tag == "Player" && !this.gameObject.GetComponent<Collider>().isTrigger)
+        {
+            sendScoreToSystem();
+
+            this.gameObject.SetActive(false);
+            ScoreCurrentLevel.instance.AddCoin(this);
+        }
     }
 
+    IEnumerator ResetTrigger() {
+
+        yield return new WaitForSeconds(1);
+            this.gameObject.GetComponent<Collider>().isTrigger = true;
+            transform.position = transform.position;
+            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            StopCoroutine(ResetTrigger());
+        
+    }
     public void sendScoreToSystem()
     {
-        Debug.Log(contentScore);
+        //Debug.Log(contentScore);
         
         
     }
+    public void AddRigidbody()
+    {
+        this.gameObject.AddComponent<Rigidbody>();
+        Rigidbody rbCoin = this.gameObject.GetComponent<Rigidbody>();
+    }
 
+    public void RemoveAnimator()
+    {
+        Destroy(this.gameObject.GetComponent<Animator>());
+    }
 
 }

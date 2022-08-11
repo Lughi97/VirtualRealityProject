@@ -19,7 +19,7 @@ public class RecursiveMazeAlgorithm : MazeGenerator
         {
             movesAvailableCount = 0;
             //check move right
-            Debug.Log("(Row: " + row + ", Column: " + column + ")");
+            //Debug.Log("(Row: " + row + ", Column: " + column + ")");
             if (column + 1 < ColumnCount && !GetMazeCell(row, column + 1).IsVisited)
             {
                 movesAvailable[movesAvailableCount] = Direction.Right;
