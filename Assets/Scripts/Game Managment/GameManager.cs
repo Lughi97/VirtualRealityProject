@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour
     public bool restartLevel = false;
 
     public Camera playerCamera;
-    [SerializeField]public static GameManager instance = null;
+    public GameObject powerUpCamera;
+    private GameObject tempCameraPower;
+    [SerializeField] public static GameManager instance = null;
     private void Awake()
     {
-        if(instance== null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(this);
@@ -27,10 +29,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         setUpMazeLevel();
-  
+
     }
 
-   
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) restartGame();
@@ -47,17 +49,19 @@ public class GameManager : MonoBehaviour
 
     public void setUpMazeLevel()// here we build the maze in base of the level (to expand)
     {
-        
+
         buildmaze();
         addPlayer();
     }
 
     private void restartGame()
     {
-        
+
         Debug.Log("Restart");
         restartLevel = true;
         ScoringSystem.instance.resetCurrentLevelScore();
+        ScoreCurrentLevel.instance.LevelComplete.gameObject.SetActive(false);
+        ScoreCurrentLevel.instance.coinCanvas.gameObject.SetActive(true);
         StartCoroutine(Restart());
         Destroy(mazeInstance.gameObject);
         Destroy(tempGround);
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         restartLevel = false;
+
     }
     private void buildmaze()
     {
@@ -76,7 +81,12 @@ public class GameManager : MonoBehaviour
         tempGround = Instantiate(Ground, new Vector3(((mazeInstance.CellWidth * mazeInstance.Rows) / 2) - 5, 0, ((mazeInstance.CellHeight * mazeInstance.Columns) / 2) - 5), Quaternion.Euler(0, 0, 0)) as GameObject;
         mazeInstance.transform.parent = tempGround.transform;
         playerCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
-       
+        if (tempCameraPower == null)
+        {
+            tempCameraPower = Instantiate(powerUpCamera, new Vector3(tempGround.transform.position.x, 200, tempGround.transform.position.z), Quaternion.Euler(90, 0, 0)) as GameObject;
+            tempCameraPower.GetComponent<Camera>().enabled = false;
+        }
+
     }
 
     public void addPlayer()
@@ -84,19 +94,19 @@ public class GameManager : MonoBehaviour
         tempPlayer = Instantiate(Player, new Vector3(mazeInstance.transform.position.x, 2, mazeInstance.transform.position.z), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
         tempPlayer.transform.parent = tempGround.transform;
     }
-    
+
 
     public void resetGround()
     {
-       
+
         if (tempPlayer.activeSelf == false)
         {
             tempGround.GetComponent<RotationWorld>().enabled = false;
-          //  Debug.Log("HERE");
+            //  Debug.Log("HERE");
         }
     }
 
-    
+
     //private void nextLevel() { };
-   // private void returnMenu() { };
+    // private void returnMenu() { };
 }

@@ -60,7 +60,7 @@ public class RecursiveMazeAlgorithm : MazeGenerator
                 GetMazeCell(row, column).WallBack = true;
             }
             GetMazeCell(row, column).IsVisited = true;
-           
+
             if (movesAvailableCount > 0)
             {
                 switch (movesAvailable[Random.Range(0, movesAvailableCount)])
@@ -82,6 +82,6 @@ public class RecursiveMazeAlgorithm : MazeGenerator
                 }
             }
         } while (movesAvailableCount > 0);
-      
+
     }
 }

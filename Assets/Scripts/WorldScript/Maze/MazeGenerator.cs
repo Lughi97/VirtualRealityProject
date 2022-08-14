@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MazeGenerator{
+public abstract class MazeGenerator
+{
     //used to obtain the rows and coloms of the private variable
 
     //Used to obtain the Row and Column from the private variables 

@@ -55,10 +55,13 @@ MonoBehaviour:
   - {fileID: 3292641784891489750, guid: dd9e5f92364f2b543b4fd637067dd390, type: 3}
   - {fileID: 3292641784891489750, guid: 68c1afe249f5e934d8acdba6cd87d1d2, type: 3}
   - {fileID: 3292641784891489750, guid: 1bd64a388d481c841ade8e36098ad42f, type: 3}
+  - {fileID: 6500135253679493817, guid: b40da4d60f2bf984ba706c94af0cb004, type: 3}
+  - {fileID: 7208393445177914127, guid: 7b00d026196fd6146b8e4ea9b920c59d, type: 3}
   creates:
   - {fileID: 2937738782343667756, guid: cd8afdf4b9a26e542aac0640cbfe8067, type: 3}
-  Rows: 5
-  Columns: 5
+  CameraPowerUp: {fileID: 6500135253679493817, guid: b40da4d60f2bf984ba706c94af0cb004, type: 3}
+  Rows: 4
+  Columns: 4
   CellWidth: 20
   CellHeight: 20
   AddGaps: 0

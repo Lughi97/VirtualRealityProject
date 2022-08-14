@@ -9,6 +9,12 @@ public class ScoreCurrentLevel : MonoBehaviour
     public TextMeshProUGUI silverText;
     public TextMeshProUGUI goldText;
 
+
+    public GameObject LevelComplete;
+    public TextMeshProUGUI FinalScoreLevel;
+    public TextMeshProUGUI HighScoreLevel;
+
+
     public static ScoreCurrentLevel instance;
 
 
@@ -20,30 +26,33 @@ public class ScoreCurrentLevel : MonoBehaviour
     private int silverScore;
     private int goldScore;
     private bool CR_running = false;
-    [SerializeField] private CanvasGroup coinCanvas;
-   // private bool fadeIn = false;
+    [SerializeField] public CanvasGroup coinCanvas;
+    // private bool fadeIn = false;
     public bool fadeOut = false;
     public Transform coinBronze;
     private void Awake()
     {
-        instance = this;    
-        
+        instance = this;
+
     }
     // Start is called before the first frame update
     void Start()
     {
+        LevelComplete.gameObject.SetActive(false);
         coinBronze = coinCanvas.gameObject.transform.GetChild(0).transform.GetChild(0);
         Color currentCoin = coinBronze.GetComponent<MeshRenderer>().material.color;
         currentCoin.a = 0;
         coinBronze.GetComponent<MeshRenderer>().material.color = currentCoin;
-        coinCanvas.alpha = 0;  
+        coinCanvas.alpha = 0;
         bronzeText.text = bronzeCounter.ToString();
         silverText.text = silverCounter.ToString();
         goldText.text = goldCounter.ToString();
-        
+        FinalScoreLevel.text = FinalScoreLevel.ToString();
+        HighScoreLevel.text = HighScoreLevel.ToString();
+
 
     }
-   
+
     // Update is called once per frame
     void Update()
     {
@@ -55,6 +64,8 @@ public class ScoreCurrentLevel : MonoBehaviour
             bronzeText.text = bronzeCounter.ToString();
             silverText.text = silverCounter.ToString();
             goldText.text = goldCounter.ToString();
+            coinCanvas.alpha = 0f;
+            StopAllCoroutines();
         }
 
 
@@ -70,7 +81,7 @@ public class ScoreCurrentLevel : MonoBehaviour
         fadeOut = true;
         if (CR_running)
         {
-            StopCoroutine(fadeCoin());        
+            StopCoroutine(fadeCoin());
         }
         else StartCoroutine(fadeCoin());
         switch (coin.typeScore)
@@ -97,7 +108,7 @@ public class ScoreCurrentLevel : MonoBehaviour
 
     private IEnumerator fadeCoin()
     {
-        
+
         CR_running = true;
         while (fadeOut)
         {
@@ -110,8 +121,8 @@ public class ScoreCurrentLevel : MonoBehaviour
             }
             if (coinCanvas.alpha == 0 && coinBronze.GetComponent<MeshRenderer>().material.color.a == 0) fadeOut = false;
             yield return new WaitForSeconds(0.5f);
-            
-           
+
+
         }
         CR_running = false;
 
@@ -121,7 +132,15 @@ public class ScoreCurrentLevel : MonoBehaviour
     {
         int finalLevelScore = bronzeCounter * bronzeScore + silverCounter * silverScore + goldCounter * goldScore;
         //Debug.Log(finalLevelScore);
-        ScoringSystem.instance.getCurrentLevelTotalScore(finalLevelScore);
+        ScoringSystem.instance.getCurrentLevlCoinScore(finalLevelScore);
 
+    }
+
+    public void ShowCurrentLevelScore()
+    {
+        LevelComplete.gameObject.SetActive(true);
+        coinCanvas.gameObject.SetActive(false);
+        FinalScoreLevel.text = "Final Level Score: " + ScoringSystem.instance.Score;
+        HighScoreLevel.text = "HighScore: " + ScoringSystem.instance.HighScore;
     }
 }

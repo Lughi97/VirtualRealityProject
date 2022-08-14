@@ -11,6 +11,8 @@ TagManager:
   - Hole
   - Goal
   - Floor
+  - CameraPowerUp
+  - ArrowPowerUp
   layers:
   - Default
   - TransparentFX
