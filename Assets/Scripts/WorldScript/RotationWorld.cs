@@ -9,6 +9,7 @@ public class RotationWorld : MonoBehaviour
     [SerializeField]private float maxRotation = 45;
     private float rotX;
     private float rotZ;
+    public float angle;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,8 +41,9 @@ public class RotationWorld : MonoBehaviour
         //  Debug.Log(currentRotation);
         rotX = Mathf.Clamp(rotX, minRotation, maxRotation);
         rotZ = Mathf.Clamp(rotZ, minRotation, maxRotation);
-
+        //Debug.Log("ROTX=" + rotX + "ROTZ:" + rotZ);
         transform.eulerAngles = new Vector3(rotX, 0f, rotZ);
+        angle = 4*(rotX + rotZ);
     }
        
 }

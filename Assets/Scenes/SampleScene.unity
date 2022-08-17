@@ -1558,12 +1558,18 @@ MonoBehaviour:
   LevelComplete: {fileID: 459868771}
   FinalScoreLevel: {fileID: 911054005}
   HighScoreLevel: {fileID: 1216979714}
+  trasparentMaterial: {fileID: 2100000, guid: 579d259f704058e478db275b5e303671, type: 2}
+  currentMaterial: []
   bronzeCounter: 0
   silverCounter: 0
   goldCounter: 0
+  CR_running: 0
   coinCanvas: {fileID: 1994209747}
   fadeOut: 0
-  coinBronze: {fileID: 0}
+  coins:
+  - {fileID: 1397747653314714429}
+  - {fileID: 8830769677044116088}
+  - {fileID: 5325360637689109057}
 --- !u!114 &1361650113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2284,7 +2290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2152e7d1677e94c84c59964192f968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeScore: 0
+  typeScore: 2
   contentScore: 0
   bounce: 0
 --- !u!1 &8589322299010525736

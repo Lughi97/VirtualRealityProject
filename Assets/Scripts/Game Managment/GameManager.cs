@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Camera playerCamera;
     public GameObject powerUpCamera;
     private GameObject tempCameraPower;
+
+    public bool endLevel = false;
     [SerializeField] public static GameManager instance = null;
     private void Awake()
     {
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Restart");
         restartLevel = true;
+        endLevel = false;
         ScoringSystem.instance.resetCurrentLevelScore();
         ScoreCurrentLevel.instance.LevelComplete.gameObject.SetActive(false);
         ScoreCurrentLevel.instance.coinCanvas.gameObject.SetActive(true);
@@ -105,6 +108,8 @@ public class GameManager : MonoBehaviour
             //  Debug.Log("HERE");
         }
     }
+
+  
 
 
     //private void nextLevel() { };

@@ -61,7 +61,7 @@ public class MazeSpawner : MonoBehaviour
                 float z = row * (CellHeight + (AddGaps ? .2f : 0));
                 MazeCell cell = mMazeGenerator.GetMazeCell(row, column);
                 GameObject tmp;
-                tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(90, 0, 0)) as GameObject;
+                tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0, 0, 0)) as GameObject;
                 tmp.transform.parent = transform;
                 if (row != 0 && row != Rows && column != 0 && column != Columns)
                 {
@@ -136,6 +136,7 @@ public class MazeSpawner : MonoBehaviour
     //add black holes to the scene that kills the player
     private void placeBlackHoles(float x, float z, GameObject floorTmp)
     {
+
         int side = Random.Range(0, 4);
         int random = Random.Range(1, 100);
         GameObject tmp;
@@ -218,18 +219,34 @@ public class MazeSpawner : MonoBehaviour
                 case 4:
                     if (chance % 4 == 0)
                     {
-                        if (Random.Range(0, 4) % 2 == 0)
-                        {
-                            // Debug.Log("HELLO");
-                            tmpPower = Instantiate(collectable[3], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                            tmpPower.transform.parent = floorTmp.transform;
-                        }
-                        else
-                        {
-                            // Debug.Log("HEYYYYYYYY");
-                            tmpPower = Instantiate(collectable[4], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                            tmpPower.transform.parent = floorTmp.transform;
-                        }
+                        switch (Random.Range(0, 3)) {
+                            case 0:
+                                // Debug.Log("HELLO");
+                                tmpPower = Instantiate(collectable[3], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                                tmpPower.transform.parent = floorTmp.transform;
+                                break;
+                            case 1:
+                                // Debug.Log("HEYYYYYYYY");
+                                tmpPower = Instantiate(collectable[4], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                                tmpPower.transform.parent = floorTmp.transform;
+                                break;
+
+                            case 2:
+                                // Debug.Log("HEYYYYYYYY");
+                                int[] angles = { 0, 90, 180, -90 };
+                                int currentAngle = angles[Random.Range(0, angles.Length)];
+                           
+                                
+                               
+                                tmpPower = Instantiate(collectable[5], new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z), Quaternion.Euler(0,currentAngle, 0)) as GameObject;
+                                tmpPower.transform.parent = floorTmp.transform;
+                                if (currentAngle == 0) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x - 7, 1f, floorTmp.transform.position.z);
+                                else if (currentAngle == 90) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z+7);
+                                else if (currentAngle == 180) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x+7, 1f, floorTmp.transform.position.z);
+                                else if (currentAngle == -90) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z - 7);
+                                break;
+                       
+                    }
                     }
                     break;
 

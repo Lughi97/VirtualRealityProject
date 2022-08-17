@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 public class ScoreCurrentLevel : MonoBehaviour
 {
     public TextMeshProUGUI bronzeText;
@@ -14,6 +15,8 @@ public class ScoreCurrentLevel : MonoBehaviour
     public TextMeshProUGUI FinalScoreLevel;
     public TextMeshProUGUI HighScoreLevel;
 
+    public Material trasparentMaterial;
+    public Material[] currentMaterial;
 
     public static ScoreCurrentLevel instance;
 
@@ -25,11 +28,13 @@ public class ScoreCurrentLevel : MonoBehaviour
     private int bronzeScore;
     private int silverScore;
     private int goldScore;
-    private bool CR_running = false;
+    public bool CR_running = false;
     [SerializeField] public CanvasGroup coinCanvas;
     // private bool fadeIn = false;
     public bool fadeOut = false;
-    public Transform coinBronze;
+    public Transform[] coins;
+    //[SerializeField]
+    //private Color[] coinColor;
     private void Awake()
     {
         instance = this;
@@ -39,10 +44,10 @@ public class ScoreCurrentLevel : MonoBehaviour
     void Start()
     {
         LevelComplete.gameObject.SetActive(false);
-        coinBronze = coinCanvas.gameObject.transform.GetChild(0).transform.GetChild(0);
-        Color currentCoin = coinBronze.GetComponent<MeshRenderer>().material.color;
-        currentCoin.a = 0;
-        coinBronze.GetComponent<MeshRenderer>().material.color = currentCoin;
+        // coin = coinCanvas.gameObject.transform.GetChild(0).transform.GetChild(0);
+        //Color currentCoin = coin.GetComponent<MeshRenderer>().material.color;
+
+        //  coin.GetComponent<MeshRenderer>().material.color = currentCoin;
         coinCanvas.alpha = 0;
         bronzeText.text = bronzeCounter.ToString();
         silverText.text = silverCounter.ToString();
@@ -56,6 +61,24 @@ public class ScoreCurrentLevel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentMaterial.Length == 0)
+        {
+            Debug.Log("EEEEEEEEY");
+            currentMaterial = new Material[coins.Length];
+          
+            for (int i = 0; i < coins.Length; i++)
+            {
+
+                // coinColor[i] = coin[i].GetComponent<MeshRenderer>().material.color;
+                //  coinColor[i].a = 0f;
+                currentMaterial[i] = coins[i].GetComponent<MeshRenderer>().material;
+                Debug.Log(currentMaterial[i]);
+                coins[i].GetComponent<MeshRenderer>().material = trasparentMaterial;
+                Debug.Log(coins[i].GetComponent<MeshRenderer>().material);
+
+                //coin[i].GetComponent<MeshRenderer>().material.color = coinColor[i];
+            }
+        }
         if (GameManager.instance.restartLevel == true)
         {
             bronzeCounter = 0;
@@ -75,13 +98,24 @@ public class ScoreCurrentLevel : MonoBehaviour
         //Debug.Log(coin.typeScore);
         //CalculateCoins();
         coinCanvas.alpha = 1;
-        Color currentCoin = coinBronze.GetComponent<MeshRenderer>().material.color;
-        currentCoin.a = 1;
-        coinBronze.GetComponent<MeshRenderer>().material.color = currentCoin;
+        for (int i = 0; i < coins.Length; i++)
+        {
+
+            // coinColor[i] = coin[i].GetComponent<MeshRenderer>().material.color;
+            //  coinColor[i].a = 0f;
+            coins[i].GetComponent<MeshRenderer>().material = currentMaterial[i];
+
+            //coin[i].GetComponent<MeshRenderer>().material.color = coinColor[i];
+        }
+
+        //  Color currentCoin = coin.GetComponent<MeshRenderer>().material.color;
+        //currentCoin.a = 1;
+        // coin.GetComponent<MeshRenderer>().material.color = currentCoin;
         fadeOut = true;
         if (CR_running)
         {
             StopCoroutine(fadeCoin());
+            CR_running = false;
         }
         else StartCoroutine(fadeCoin());
         switch (coin.typeScore)
@@ -112,14 +146,25 @@ public class ScoreCurrentLevel : MonoBehaviour
         CR_running = true;
         while (fadeOut)
         {
-            if (coinCanvas.alpha >= 0 && coinBronze.GetComponent<MeshRenderer>().material.color.a >= 0)
+            Debug.Log(coinCanvas.alpha);
+            if (coinCanvas.alpha >= 0)
             {
                 coinCanvas.alpha -= 0.05f;
-                Color currentCOlor = coinBronze.GetComponent<MeshRenderer>().material.color;
-                currentCOlor.a -= 0.05f;
-                coinBronze.GetComponent<MeshRenderer>().material.color = currentCOlor;
+                //   for (int i = 0; i < coin.Length; i++)
+                //  {
+                //coinColor[i] = coin[i].GetComponent<MeshRenderer>().material.color;
+                // coinColor[i].a -=0.05f;
+                //  }
+                //  Color currentCOlor = coin.GetComponent<MeshRenderer>().material.color;
+                // currentCOlor.a -= 0.05f;
+                // coin.GetComponent<MeshRenderer>().material.color = currentCOlor;
             }
-            if (coinCanvas.alpha == 0 && coinBronze.GetComponent<MeshRenderer>().material.color.a == 0) fadeOut = false;
+            if (coinCanvas.alpha == 0)
+            {
+                fadeOut = false;
+                for (int i = 0; i < currentMaterial.Length; i++)
+                    coins[i].GetComponent<MeshRenderer>().material =  trasparentMaterial;
+            }// && coin.GetComponent<MeshRenderer>().material.color.a == 0) 
             yield return new WaitForSeconds(0.5f);
 
 

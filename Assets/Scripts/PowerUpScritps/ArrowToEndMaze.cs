@@ -32,18 +32,27 @@ public class ArrowToEndMaze : MonoBehaviour
     private void Update()
     {
 
-        if (lookAtTarget!=null)
+        if (GameManager.instance.restartLevel == true)
         {
+            Debug.Log("HELLO THIS IS THE RESTART");
+            Destroy(gameObject);
+            StopAllCoroutines();
+
+        }
+        if (lookAtTarget != null)
+        {
+            
+            Debug.Log(lookAtTarget);
             Vector3 difference = lookAtTarget.transform.position - transform.position;
             float rotationY = Mathf.Atan2(difference.x, difference.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
         }
-        if (Arrow!=null)
+        if (Arrow != null)
         {
-
+            Debug.Log(Arrow);
             distToTarget = Vector3.Distance(lookAtTarget.transform.position, transform.position);
             speed = chooseSpeed(distToTarget);
-            Debug.Log(distToTarget);
+            // Debug.Log(distToTarget);
             Arrow.transform.Rotate(speed * Time.fixedDeltaTime, 0, 0);
         }
         else getArrow();
@@ -53,7 +62,7 @@ public class ArrowToEndMaze : MonoBehaviour
 
     private float chooseSpeed(float dist)
     {
-      
+
         if (distToTarget > 150)
             return speed;
         if (distToTarget > 100 && distToTarget < 150)
@@ -61,7 +70,7 @@ public class ArrowToEndMaze : MonoBehaviour
         if (distToTarget > 50 && distToTarget < 100)
             return speed = 25f;
         if (distToTarget > 25 && distToTarget < 50)
-            return speed =  50f;
+            return speed = 50f;
         else if (distToTarget < 25)
             return 75f;
         else

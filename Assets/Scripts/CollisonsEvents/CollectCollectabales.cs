@@ -16,7 +16,7 @@ public class CollectCollectabales : MonoBehaviour
     public TypeScore typeScore;
     public int contentScore;
     public bool bounce = false;
-   
+
     /* public int ContentScore
       {
           get { return contentScore; }
@@ -62,30 +62,18 @@ public class CollectCollectabales : MonoBehaviour
             this.gameObject.SetActive(false);
             ScoreCurrentLevel.instance.AddCoin(this);
         }
-      
+
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Floor")
         {
-           // Debug.Log("hitFloor");
-
-
+            
             Rigidbody rbCoin = this.gameObject.GetComponent<Rigidbody>();
             if (!bounce)
             {
-
-               // Debug.Log("AddForce");
-                rbCoin.AddForce(new Vector3(0, 10, 0));
                 bounce = true;
-               
-
-
-            }
-            else
-            {
                 StartCoroutine(ResetTrigger());
-
             }
 
 
@@ -99,20 +87,21 @@ public class CollectCollectabales : MonoBehaviour
         }
     }
 
-    IEnumerator ResetTrigger() {
-
-        yield return new WaitForSeconds(1);
-            this.gameObject.GetComponent<Collider>().isTrigger = true;
-            transform.position = transform.position;
-            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            StopCoroutine(ResetTrigger());
+    IEnumerator ResetTrigger()
+    {
         
+        yield return new WaitForSeconds(5f);
+        this.gameObject.GetComponent<Collider>().isTrigger = true;
+        transform.position = transform.position;
+        this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        StopCoroutine(ResetTrigger());
+
     }
     public void sendScoreToSystem()
     {
         //Debug.Log(contentScore);
-        
-        
+
+
     }
     public void AddRigidbody()
     {

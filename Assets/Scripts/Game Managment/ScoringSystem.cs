@@ -44,11 +44,11 @@ public class ScoringSystem : MonoBehaviour
     }
     public void getCurrentLevelTotalScore()
     {
-        Debug.Log("HELLO");
+       // Debug.Log("HELLO");
         Score = scoreCoin + scoreDistance;
-        Debug.Log("Final Level Score: " + Score);
+       // Debug.Log("Final Level Score: " + Score);
         if (HighScore < Score) HighScore = Score;
-        Debug.Log("Level HighScore: " + HighScore);
+        //Debug.Log("Level HighScore: " + HighScore);
 
     }
     public void resetCurrentLevelScore()
@@ -56,6 +56,6 @@ public class ScoringSystem : MonoBehaviour
         Score = 0;
         scoreCoin = 0;
         scoreDistance = 0;
-        Debug.Log(Score);
+       // Debug.Log(Score);
     }
 }

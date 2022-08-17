@@ -15,14 +15,22 @@ public class PillarEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (GameManager.instance.restartLevel == true) StopAllCoroutines();
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             pillarAnimator.Play("BouncyPillar", 0, 0.0f);
+            StartCoroutine(DeactivateAnimation());
         }
+
+    }
+
+    IEnumerator DeactivateAnimation()
+    {
+        yield return new WaitForSeconds(3f);
+        pillarAnimator.enabled = false;
 
     }
 }

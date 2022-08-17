@@ -47,7 +47,7 @@ MonoBehaviour:
   Algorithm: 0
   FullRandom: 1
   RandomSeed: 12345
-  Floor: {fileID: 5164054121804527746, guid: 943796e89660b594697b91f6097b0003, type: 3}
+  Floor: {fileID: 7325360163237058785, guid: f362771ab76ce9f4aa5292fc945f6629, type: 3}
   Wall: {fileID: 4362792659905588399, guid: 7ce49a846a829c14ca2826830c572380, type: 3}
   Pillar: {fileID: 8888105632888367786, guid: a057a8b69c469a14da097b18996f46b6, type: 3}
   BlackHoles: {fileID: 4974153485461861222, guid: ce6f3b004430d1144a34dd023b6f5316, type: 3}
@@ -55,13 +55,14 @@ MonoBehaviour:
   - {fileID: 3292641784891489750, guid: dd9e5f92364f2b543b4fd637067dd390, type: 3}
   - {fileID: 3292641784891489750, guid: 68c1afe249f5e934d8acdba6cd87d1d2, type: 3}
   - {fileID: 3292641784891489750, guid: 1bd64a388d481c841ade8e36098ad42f, type: 3}
-  - {fileID: 6500135253679493817, guid: b40da4d60f2bf984ba706c94af0cb004, type: 3}
-  - {fileID: 7208393445177914127, guid: 7b00d026196fd6146b8e4ea9b920c59d, type: 3}
+  - {fileID: 5164476917814050170, guid: 0c58aa5d6b6960e4eb33dfb92a19cc22, type: 3}
+  - {fileID: 4306123667551395957, guid: 6e1919e8847d6b641840f8c2afd81231, type: 3}
+  - {fileID: 8350845225258933522, guid: 4441a17f6de9dc64b8f8bd7d1b706ba9, type: 3}
   creates:
   - {fileID: 2937738782343667756, guid: cd8afdf4b9a26e542aac0640cbfe8067, type: 3}
   CameraPowerUp: {fileID: 6500135253679493817, guid: b40da4d60f2bf984ba706c94af0cb004, type: 3}
-  Rows: 4
-  Columns: 4
+  Rows: 5
+  Columns: 5
   CellWidth: 20
   CellHeight: 20
   AddGaps: 0

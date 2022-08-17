@@ -10,13 +10,7 @@ public class SpawnArrow : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.restartLevel == true)
-        {
-            Debug.Log("HELLO THIS IS THE RESTART");
-            Destroy(tmpArrow);
-            StopAllCoroutines();
-
-        }
+       
     }
     public IEnumerator spawnArrow()
     {
