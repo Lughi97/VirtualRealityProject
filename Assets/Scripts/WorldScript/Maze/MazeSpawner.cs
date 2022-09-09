@@ -1,40 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class MazeSpawner : MonoBehaviour
+public class MazeSpawner : PlaceInMaze
 {
     public enum MazeGenerationAlgorithm
     {
         PureRecursive,
-        RecursiveBacktraking
+        MenuMaze
     }
+    [Header("Maze Genarator")]
     public MazeGenerationAlgorithm Algorithm = MazeGenerationAlgorithm.PureRecursive;
     public bool FullRandom = false;
     public int RandomSeed = 12345;
+    public int Rows;
+    public int Columns;
+    public float CellWidth;
+    public float CellHeight;
+    public bool AddGaps = false;
+
+    [Header("LevelObjects")]
     public GameObject Floor = null;
     public GameObject Wall = null;
     public GameObject Pillar = null;
     public GameObject BlackHoles = null;
     public GameObject[] collectable = null;
-    public GameObject[] creates = null;
-
+    // public GameObject[] creates = null;
     public GameObject CameraPowerUp;
-
-
-    public int Rows = 5;
-    public int Columns = 5;
-    public float CellWidth = 5;
-    public float CellHeight = 5;
-    public bool AddGaps = false;
-
-
     public GameObject GoalPrefab = null;
     private MazeGenerator mMazeGenerator = null;
+
+    [Header("MainMenu")]
+    //Menu
+    [SerializeField]
+    private List<GameObject> menuText;
+    [SerializeField]
+    private GameObject menuReturn;
+
+
+    [Header("HighScoresMenu")]
+    [SerializeField]
+    private List<GameObject> LevelText;
+    [SerializeField]
+    private GameObject singleScore;
+
+
+    [Header("Shop Menu")]
+    [SerializeField]
+    private GameObject playerSphereType;
+  //  [SerializeField]
+   // private List<PlayerPrefs> skins;
 
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.Instance.mainMenuLevel)
+            Algorithm = MazeGenerationAlgorithm.MenuMaze;
+        else Algorithm = MazeGenerationAlgorithm.PureRecursive;
+
+
+        Rows = GameManager.Instance.mazeRows;
+        Columns = GameManager.Instance.mazeColums;
+
         if (!FullRandom)
         {
             Random.InitState(RandomSeed);
@@ -44,16 +72,21 @@ public class MazeSpawner : MonoBehaviour
             case MazeGenerationAlgorithm.PureRecursive:
                 mMazeGenerator = new RecursiveMazeAlgorithm(Rows, Columns);
                 break;
-            case MazeGenerationAlgorithm.RecursiveBacktraking:
-                mMazeGenerator = new RecursiveBacktraking(Rows, Columns);
+            case MazeGenerationAlgorithm.MenuMaze:
+                mMazeGenerator = new MenuMaze(Rows, Columns);
                 break;
         }
         mMazeGenerator.GenerateMaze();
-        CreateLevelWorld();
+        if (Algorithm != MazeGenerationAlgorithm.MenuMaze)
+            CreateLevelWorld();
+        else
+            CreateMainMenu();
+
 
     }
     private void CreateLevelWorld()
     {
+        PlaceInMaze.getValueMaze(CellWidth, CellHeight,Rows,Columns);
         for (int row = 0; row < Rows; row++)
             for (int column = 0; column < Columns; column++)
             {
@@ -63,66 +96,37 @@ public class MazeSpawner : MonoBehaviour
                 GameObject tmp;
                 tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0, 0, 0)) as GameObject;
                 tmp.transform.parent = transform;
+
+
                 if (row != 0 && row != Rows && column != 0 && column != Columns)
                 {
-                    placeBlackHoles(x, z, tmp);
-                    placeCollectables(x, z, tmp);
+                    //placeBlackHoles(x,z,tmp)
+                    PlaceInMaze.placeBlackHoles(BlackHoles,x, z, tmp);
+                    //placeCollectables(x, z, tmp);
+                    PlaceInMaze.placeCollectables(collectable, x, z, tmp);
                 }
-                if (cell.WallRight)
-                {
-                    tmp = Instantiate(Wall, new Vector3(x + CellWidth / 2, Wall.transform.localScale.y / 2, z) + Wall.transform.position, Quaternion.Euler(0, 90, 0)) as GameObject;// right
-                    tmp.transform.parent = transform;
-                }
-                if (cell.WallFront)
-                {
-                    tmp = Instantiate(Wall, new Vector3(x, Wall.transform.localScale.y / 2, z + CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;// front
-                    tmp.transform.parent = transform;
-                }
-                if (cell.WallLeft)
-                {
-                    tmp = Instantiate(Wall, new Vector3(x - CellWidth / 2, Wall.transform.localScale.y / 2, z) + Wall.transform.position, Quaternion.Euler(0, 270, 0)) as GameObject;// left
-                    tmp.transform.parent = transform;
-                }
-                if (cell.WallBack)
-                {
-                    tmp = Instantiate(Wall, new Vector3(x, Wall.transform.localScale.y / 2, z - CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;// back
-                    tmp.transform.parent = transform;
-                }
-                //if (GoalPrefab != null && row==Rows-1 && column==Columns-1)
-                //   {
-                //    tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                //      tmp.transform.parent = transform;
-                // }
+                PlaceInMaze.placeWalls(transform,Wall,x, z, cell);
             }
-        if (Pillar != null)
-        {
-            for (int row = 0; row <= Rows; row++)
-                for (int column = 0; column <= Columns; column++)
-                {
-                    float x = column * (CellWidth + (AddGaps ? .2f : 0));
-                    float z = row * (CellHeight + (AddGaps ? .2f : 0));
-                    GameObject tmp;
-                    tmp = Instantiate(Pillar, new Vector3(x - CellWidth / 2, Pillar.transform.localPosition.y, z - CellHeight / 2), Pillar.transform.rotation) as GameObject;
-                    tmp.transform.parent = transform;
-                }
-        }
+
+        PlaceInMaze.placePillars(transform,Pillar);
         if (GoalPrefab != null)
         {
+            // Debug.Log("HEELO");
             GameObject tmp;
             float x = Columns * (CellWidth + (AddGaps ? .2f : 0));
             float z = Rows * (CellHeight + (AddGaps ? .2f : 0));
-            int RandNumber = Random.Range(1, 4);
+            int RandNumber = Random.Range(1, 3);
             switch (RandNumber)
             {
+                // case 1:
+                //     tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0, 0), GoalPrefab.transform.rotation) as GameObject;
+                //      tmp.transform.parent = transform;
+                //      break;
                 case 1:
-                    tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0, 0), GoalPrefab.transform.rotation) as GameObject;
-                    tmp.transform.parent = transform;
-                    break;
-                case 2:
                     tmp = Instantiate(GoalPrefab, new Vector3(0, 0, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                     break;
-                case 3:
+                case 2:
                     tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                     break;
@@ -133,128 +137,45 @@ public class MazeSpawner : MonoBehaviour
         }
 
     }
-    //add black holes to the scene that kills the player
-    private void placeBlackHoles(float x, float z, GameObject floorTmp)
+    private void CreateMainMenu()
     {
-
-        int side = Random.Range(0, 4);
-        int random = Random.Range(1, 100);
-        GameObject tmp;
-        if (BlackHoles != null)
-        {
-
-            if (random % 5 == 0)
+        float X = Columns * (CellWidth + (AddGaps ? .2f : 0));
+        float Z = Rows * (CellHeight + (AddGaps ? .2f : 0));
+        Vector3 position = new Vector3(X - CellWidth, 0, 0);
+        PlaceInMaze.getValueMaze(CellWidth, CellHeight, Rows, Columns);
+        for (int row = 0; row < Rows; row++)
+            for (int column = 0; column < Columns; column++)
             {
-                switch (side)
-                {
-                    case 0:
-                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x + floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z + floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
-                        break;
-                    case 1:
-                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x - floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z + floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
-                        break;
-                    case 2:
-                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x - floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z - floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
-                        break;
-                    case 3:
-                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x + floorTmp.transform.localScale.x / 3, 0f, floorTmp.transform.position.z - floorTmp.transform.localScale.x / 3), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
-                        break;
-                    case 4:
-                        tmp = Instantiate(BlackHoles, new Vector3(floorTmp.transform.position.x, 0f, floorTmp.transform.position.z), BlackHoles.transform.rotation) as GameObject;
-                        tmp.transform.parent = floorTmp.transform;
-                        break;
-
-                }
-
+                float x = column * (CellWidth + (AddGaps ? .2f : 0));
+                float z = row * (CellHeight + (AddGaps ? .2f : 0));
+                MazeCell cell = mMazeGenerator.GetMazeCell(row, column);
+                GameObject tmp;
+                tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                tmp.transform.parent = transform;
+                PlaceInMaze.placeWalls(transform, Wall, x, z, cell);
 
             }
-        }
-    }
-
-    private void placeCollectables(float x, float z, GameObject floorTmp)
-    {
-        int chance = Random.Range(1, 20);
-        int randomCollectable = Random.Range(0, 5);
-        if (collectable != null && x != 0 && z != 0)
+        PlaceInMaze.placePillars(transform, Pillar);
+        switch (GameManager.Instance.typeScene)
         {
-
-            GameObject tmpCoin;
-            GameObject tmpCreate;
-            GameObject tmpPower;
-            // GameObject tmpPoerArrow;
-            switch (randomCollectable)
-            {
-                case 0:
-                    if (chance % 2 == 0)
-                    {
-                        tmpCoin = Instantiate(collectable[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmpCoin.transform.parent = floorTmp.transform;
-                    }
-                    break;
-                case 1:
-                    if (chance % 3 == 0)
-                    {
-                        tmpCoin = Instantiate(collectable[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmpCoin.transform.parent = floorTmp.transform;
-                    }
-                    break;
-                case 2:
-                    if (chance % 5 == 0)
-                    {
-                        tmpCoin = Instantiate(collectable[2], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmpCoin.transform.parent = floorTmp.transform;
-                    }
-                    break;
-                case 3:
-                    if (chance % 3 == 0)
-                    {
-                        tmpCreate = Instantiate(creates[0], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmpCreate.transform.parent = floorTmp.transform;
-                    }
-                    break;
-                case 4:
-                    if (chance % 4 == 0)
-                    {
-                        switch (Random.Range(0, 3)) {
-                            case 0:
-                                // Debug.Log("HELLO");
-                                tmpPower = Instantiate(collectable[3], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                                tmpPower.transform.parent = floorTmp.transform;
-                                break;
-                            case 1:
-                                // Debug.Log("HEYYYYYYYY");
-                                tmpPower = Instantiate(collectable[4], new Vector3(floorTmp.transform.position.x, 3f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                                tmpPower.transform.parent = floorTmp.transform;
-                                break;
-
-                            case 2:
-                                // Debug.Log("HEYYYYYYYY");
-                                int[] angles = { 0, 90, 180, -90 };
-                                int currentAngle = angles[Random.Range(0, angles.Length)];
-                           
-                                
-                               
-                                tmpPower = Instantiate(collectable[5], new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z), Quaternion.Euler(0,currentAngle, 0)) as GameObject;
-                                tmpPower.transform.parent = floorTmp.transform;
-                                if (currentAngle == 0) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x - 7, 1f, floorTmp.transform.position.z);
-                                else if (currentAngle == 90) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z+7);
-                                else if (currentAngle == 180) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x+7, 1f, floorTmp.transform.position.z);
-                                else if (currentAngle == -90) tmpPower.transform.position = new Vector3(floorTmp.transform.position.x, 1f, floorTmp.transform.position.z - 7);
-                                break;
-                       
-                    }
-                    }
-                    break;
-
-
-            }
-
-
-
+            case SceneLevel.MainMenu:
+                PlaceInMaze.placeMenuComponents(transform, menuText);
+                break;
+            case SceneLevel.HighScoreMenu:
+                PlaceInMaze.placeHighScores(transform, LevelText, singleScore);
+                PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
+                break;
+            case SceneLevel.Settings:
+                Debug.Log("ADD SETTINGS");
+                PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
+                break;
+            case SceneLevel.Shop:
+                Debug.Log("ADD SHOP");
+               
+                PlaceInMaze.placeSkinPlayer(transform,GameManager.Instance.skinsPlayer, playerSphereType);
+                PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
+                break;
         }
     }
 }
+

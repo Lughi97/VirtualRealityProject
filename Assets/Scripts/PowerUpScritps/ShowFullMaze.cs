@@ -15,6 +15,7 @@ public class ShowFullMaze : MonoBehaviour
 
     void Start()
     {
+        mainCamera = GameManager.Instance.tmpCamera;
         if (mainCameraObj != null)
             mainCamera.enabled = true;
         if (powerUpCamera != null)
@@ -35,7 +36,7 @@ public class ShowFullMaze : MonoBehaviour
         }
         if (mainCameraObj == null)
         {
-            mainCameraObj = GameObject.Find("Main Camera");
+            mainCameraObj = GameObject.Find("Main Camera(Clone)");
             // Debug.Log(powerUpCamera);
             if (mainCamera == null)
             {
@@ -45,7 +46,7 @@ public class ShowFullMaze : MonoBehaviour
             }
         }
 
-        if (GameManager.instance.restartLevel == true)
+        if (GameManager.Instance.restartLevel == true)
         {
             StopAllCoroutines();
         }

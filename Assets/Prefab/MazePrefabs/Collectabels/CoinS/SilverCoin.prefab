@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3421285884493476273}
   m_Layer: 0
   m_Name: CoinStar2
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,6 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeScore: 1
   contentScore: 0
+  nameCoin: 
+  bounce: 0
 --- !u!1 &3292641784891489750
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +146,7 @@ GameObject:
   - component: {fileID: 8986434647088811548}
   m_Layer: 0
   m_Name: SilverCoin
-  m_TagString: Untagged
+  m_TagString: Coins
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
