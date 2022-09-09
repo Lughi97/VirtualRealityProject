@@ -19,6 +19,7 @@ public class SaveSystem
     public static string playerFile = "playerData.txt";
     public static string scoreFIle = "HighScores";
     public static string coinFile = "CoinCollected";
+    public static PlayerType type;
     public static void SaveScore(ScoringSystem ScoreSystem)
     {
         string dir = Application.persistentDataPath + directory;
@@ -49,13 +50,13 @@ public class SaveSystem
 
     }
 
-    public static void SaveSkin(PlayerType type)
+    public static void SaveSkin(PlayerType typePlayer)
     {
         string dir = Application.persistentDataPath + directory;
 
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
-
+        type = typePlayer;
         Debug.Log("SAVING DATA AT: " + dir);
         string json = JsonUtility.ToJson(type);
         File.WriteAllText(dir + playerFile, json);
@@ -112,14 +113,6 @@ public class SaveSystem
         if (stream != null)
         {
             CoinsCollected = formatter.Deserialize(stream) as List<coinValue>;
-
-            // if (File.Exists(pathCoins))
-            // {
-            //     BinaryFormatter formatter = new BinaryFormatter();
-            //  FileStream stream = new FileStream(pathCoins, FileMode.Open);
-
-            // CoinsCollected = formatter.Deserialize(stream) as List<coinValue>;
-
             stream.Close();
             return CoinsCollected;
 
@@ -136,8 +129,8 @@ public class SaveSystem
     {
 
         string fullPath = Application.persistentDataPath + directory + playerFile;
-        PlayerType type = new PlayerType();
 
+        type = ScriptableObject.CreateInstance<PlayerType>();
         if (File.Exists(fullPath))
         {
             string json = File.ReadAllText(fullPath);
@@ -150,25 +143,6 @@ public class SaveSystem
             Debug.Log("Save file does not exists");
             return null;
         }
-
-
-        // string pathType = "TempType";
-        // if (File.Exists(pathType))
-        //  {
-        //      BinaryFormatter formatter = new BinaryFormatter();
-        //      FileStream stream = new FileStream(pathType, FileMode.Open);
-
-        //      currentSavedType = formatter.Deserialize(stream) as PlayerType;
-
-        //       stream.Close();
-        //       return currentSavedType;
-
-        //   }
-        //  else
-        //  {
-        ///      Debug.Log("Save file not found in" + pathType);
-        //       return null;
-        //   }
     }
 
 
