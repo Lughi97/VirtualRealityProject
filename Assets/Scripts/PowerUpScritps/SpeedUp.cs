@@ -20,7 +20,7 @@ public class SpeedUp : MonoBehaviour
     private void Update()
     {
         Transform parent = gameObject.transform.parent;
-        Debug.Log(gameObject.transform.parent.localEulerAngles.y);
+       // Debug.Log(gameObject.transform.parent.localEulerAngles.y);
        
     }
     public Vector3 Acceleration()

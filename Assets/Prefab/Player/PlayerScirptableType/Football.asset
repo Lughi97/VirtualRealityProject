@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc73d88945cddbe4799ed4b2b7db6228, type: 3}
+  m_Name: Football
+  m_EditorClassIdentifier: 
+  type: 1
+  skin: {fileID: 2100000, guid: 143b58a5c5b1b4e489e4e4d0f433274a, type: 2}
+  maxXZVelocity: 18
+  mass: 4
+  scale: 0.9
+  speedSlopeBoost: 0.25
+  lineEffect: 0
+  costBronze: 25
+  costSilver: 15
+  costGold: 20
+  paid: 1

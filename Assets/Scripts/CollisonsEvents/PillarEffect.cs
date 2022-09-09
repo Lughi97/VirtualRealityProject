@@ -5,7 +5,7 @@ using UnityEngine;
 public class PillarEffect : MonoBehaviour
 {
     [SerializeField] private Animator pillarAnimator;
-    [SerializeField] private string effect = "BouncyPillar";
+   // [SerializeField] private string effect = "BouncyPillar";
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class PillarEffect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.restartLevel == true) StopAllCoroutines();
+        if (GameManager.Instance.restartLevel == true) StopAllCoroutines();
     }
     private void OnCollisionEnter(Collision collision)
     {

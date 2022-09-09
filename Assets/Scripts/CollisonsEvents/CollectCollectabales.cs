@@ -15,6 +15,7 @@ public class CollectCollectabales : MonoBehaviour
 
     public TypeScore typeScore;
     public int contentScore;
+    [SerializeField] private string nameCoin;
     public bool bounce = false;
 
     /* public int ContentScore
@@ -38,12 +39,15 @@ public class CollectCollectabales : MonoBehaviour
         {
             case TypeScore.bronze:
                 contentScore = 3;
+                nameCoin = "BronzeCoin";
                 break;
             case TypeScore.silver:
                 contentScore = 6;
+                nameCoin = "silverCoin";
                 break;
             case TypeScore.gold:
                 contentScore = 9;
+                nameCoin = "GoldCoin";
                 break;
 
         }
@@ -51,14 +55,18 @@ public class CollectCollectabales : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (transform.position.y < -50) Destroy(this.gameObject);
+        if (transform.position.y < -100)
+        { Debug.Log("Destroy");
+            Destroy(this.gameObject);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             sendScoreToSystem();
-
+           // Debug.Log("HIT");
+            SFXManager.Instance.Play(nameCoin, 0, false);
             this.gameObject.SetActive(false);
             ScoreCurrentLevel.instance.AddCoin(this);
         }
@@ -80,8 +88,11 @@ public class CollectCollectabales : MonoBehaviour
         }
         if (collision.gameObject.tag == "Player" && !this.gameObject.GetComponent<Collider>().isTrigger)
         {
+            Debug.Log("Play");
+            SFXManager.Instance.Play(nameCoin, 0, false);
             sendScoreToSystem();
-
+          
+            
             this.gameObject.SetActive(false);
             ScoreCurrentLevel.instance.AddCoin(this);
         }

@@ -32,7 +32,7 @@ public class ArrowToEndMaze : MonoBehaviour
     private void Update()
     {
 
-        if (GameManager.instance.restartLevel == true)
+        if (GameManager.Instance.restartLevel == true)
         {
             Debug.Log("HELLO THIS IS THE RESTART");
             Destroy(gameObject);
@@ -42,14 +42,14 @@ public class ArrowToEndMaze : MonoBehaviour
         if (lookAtTarget != null)
         {
             
-            Debug.Log(lookAtTarget);
+           // Debug.Log(lookAtTarget);
             Vector3 difference = lookAtTarget.transform.position - transform.position;
             float rotationY = Mathf.Atan2(difference.x, difference.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
         }
         if (Arrow != null)
         {
-            Debug.Log(Arrow);
+           // Debug.Log(Arrow);
             distToTarget = Vector3.Distance(lookAtTarget.transform.position, transform.position);
             speed = chooseSpeed(distToTarget);
             // Debug.Log(distToTarget);
@@ -92,7 +92,8 @@ public class ArrowToEndMaze : MonoBehaviour
         if (player == null)
         {
 
-            player = GameObject.Find("Player(Clone)");
+            player = GameManager.Instance.tempPlayer;
+            //player = GameObject.Find("Player(Clone)");
             //this.gameObject.transform.parent = player.transform;
 
             offset = transform.position - player.transform.position;

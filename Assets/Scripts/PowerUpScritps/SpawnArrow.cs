@@ -7,18 +7,22 @@ public class SpawnArrow : MonoBehaviour
     public GameObject arrow;
     [SerializeField]
     private GameObject tmpArrow;
-
+    private bool active;
+    private float timer = 15f;
     private void Update()
     {
        
     }
     public IEnumerator spawnArrow()
     {
-
-        tmpArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation);
-        //  StartCoroutine(fadeArrow());
-        yield return new WaitForSeconds(15f);
-
+        if (!active)
+        {
+            tmpArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation);
+            active = true;
+        }
+        else { timer = 15f; }
+        yield return new WaitForSeconds(timer);
+        active = false;
         Destroy(tmpArrow);
     }
 

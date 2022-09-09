@@ -26,11 +26,13 @@ public class CollectCreate : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Debug.Log("Destory Create");
+            SFXManager.Instance.Play("WoodBoxDesturciton", 0, false);
             GameObject temp = Instantiate(destoryedCreate, transform.position, transform.rotation);
             temp.transform.parent = this.gameObject.transform.parent;
             gameObject.GetComponent<MeshRenderer>().enabled = false;
             gameObject.GetComponent<Collider>().enabled = false;
             collectCoins(temp);
+            SFXManager.Instance.Play("CoinsDropping");
             StartCoroutine(fade(temp));
 
         }
@@ -111,6 +113,7 @@ public class CollectCreate : MonoBehaviour
     {
 
         coin.GetComponent<CollectCollectabales>().AddRigidbody();
+        coin.gameObject.tag = "Coin";
         coin.GetComponent<CollectCollectabales>().RemoveAnimator();
         coin.GetComponent<Collider>().isTrigger = false;
         Rigidbody rbCoin = coin.GetComponent<Rigidbody>();

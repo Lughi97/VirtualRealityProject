@@ -13,7 +13,7 @@ public class FollowPlayer : MonoBehaviour
     {
         if (player != null)
         {
-            player = GameObject.Find("Player(Clone)");
+            player = GameManager.Instance.tempPlayer.transform.GetChild(0).gameObject;
             offset = transform.position - player.transform.position;
             transform.position = new Vector3(player.transform.position.x, height, player.transform.position.z);
         }
@@ -25,7 +25,8 @@ public class FollowPlayer : MonoBehaviour
     {
         if (player == null)
         {
-            player = GameObject.Find("Player(Clone)");
+            player = GameManager.Instance.tempPlayer;
+            //player = GameManager.Instance.tempPlayer.transform.GetChild(0).gameObject;
             if (player != null)
             {
                 offset = transform.position - player.transform.position;
