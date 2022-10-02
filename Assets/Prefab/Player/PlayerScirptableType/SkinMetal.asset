@@ -17,7 +17,7 @@ MonoBehaviour:
   maxXZVelocity: 20
   mass: 15
   scale: 1
-  speedSlopeBoost: 0
+  speedSlopeBoost: 0.1
   lineEffect: 0
   costBronze: 45
   costSilver: 30

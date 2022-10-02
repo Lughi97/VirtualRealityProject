@@ -33,7 +33,7 @@ public class ScoringSystem : Singleton<ScoringSystem>
     private int scoreDistance;
     public int currentScore = 0;
     public int HighScore = 0;
-    public int maxScoreelements = 8;
+    public int maxScoreelements = 6;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -55,7 +55,7 @@ public class ScoringSystem : Singleton<ScoringSystem>
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void getCurrentLevlCoinScore(int score)

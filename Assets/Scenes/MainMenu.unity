@@ -203,6 +203,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2143654782942875670, guid: ac4945d16f31f4447ae63045b818784c, type: 3}
+      propertyPath: maxScoreelements
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2143654782942875670, guid: ac4945d16f31f4447ae63045b818784c, type: 3}
       propertyPath: listCoins.Array.size
       value: 3
       objectReference: {fileID: 0}

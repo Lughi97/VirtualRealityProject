@@ -6,13 +6,13 @@ using System;
 [Serializable]
 public enum typeBall
 {
-    wood,
-    football,
-    metal1,
-    metal2,
-    basketball,
-    golf,
-    tennis
+    wood,//0
+    football,//1
+    metal1,//2
+    metal2,//3
+    basketball,//4
+    golf,//5
+    tennis//6
 
 }
 
