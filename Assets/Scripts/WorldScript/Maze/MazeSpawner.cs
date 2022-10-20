@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+/// <summary>
+/// This is the spawner of the maze here we the agorithm calls the maze generator to create the maze with all the cells
+/// Here we instantiate the floors, walls and all the object needed in the scene
+/// </summary>
 public class MazeSpawner : PlaceInMaze
 {
     public enum MazeGenerationAlgorithm

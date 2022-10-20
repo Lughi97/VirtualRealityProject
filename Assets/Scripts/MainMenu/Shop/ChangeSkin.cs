@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+/// <summary>
+/// Shop functionality to change the skin of the player
+/// Check how many coins we need to pay for the new skin
+/// </summary>
 public class ChangeSkin : MonoBehaviour
 {
     public PlayerType skinToEquip;
@@ -14,7 +18,7 @@ public class ChangeSkin : MonoBehaviour
     [SerializeField] private int totalCoinsSilver;
     [SerializeField] private int totalCoinsGold;
     public TextMeshProUGUI needToComplete;
-
+    // we chek form the object if the skin was already paid!
     public void Start()
     {
         //skinToEquip = gameObject.GetComponent<Renderer>().material;
@@ -30,7 +34,6 @@ public class ChangeSkin : MonoBehaviour
         {
             needToComplete.text = " ";
         }
-        // needToComplete.text =coinBronze.ToString() + " bronze coins," + coinSilver.ToString() + " silver coins," + coinGold.ToString() + " gold coins";
 
         foreach (coinValue coins in ScoringSystem.Instance.listCoins)
         {
@@ -50,10 +53,7 @@ public class ChangeSkin : MonoBehaviour
             }
         }
     }
-    private void Update()
-    {
-
-    }
+  // check if we can buy the skin
     private void OnTriggerEnter(Collider other)
     {
 

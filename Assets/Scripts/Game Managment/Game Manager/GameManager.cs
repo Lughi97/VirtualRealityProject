@@ -196,16 +196,11 @@ public class GameManager : Singleton<GameManager>
 
     public void startGame()
     {
-        //isLoaded = true;
-
         setUpMazeLevel();
-        //to comment this is were the titleCard is lounced
-
-
-        //   LoadGame.loadToMainMenu(crossFade.GetComponent<Animator>());
+ 
     }
 
-
+    /// ----------------------UPDATE CHECKING OF THE GAME MANAGER -------------------------///
     void Update()
     {
         checkCurrentScene();
@@ -213,11 +208,14 @@ public class GameManager : Singleton<GameManager>
         if (!mainMenuLevel)
         {
 
-            if (endLevel && (Input.GetKeyDown(KeyCode.Space)))
+            if ((endLevel || playerDeath) && (Input.GetKeyDown(KeyCode.Space)))
             {
 
                 Debug.Log("SAVE");
-                SaveSystem.SaveScore(ScoringSystem.Instance);
+                if (!playerDeath)
+                {
+                    SaveSystem.SaveScore(ScoringSystem.Instance);
+                }
                 StartCoroutine(LoadGame.load(crossFade.GetComponent<Animator>()));
                 // nextLevel();
 
@@ -242,58 +240,50 @@ public class GameManager : Singleton<GameManager>
         }
 
     }
+    //Check in wich Unity Scnen the game is corrently in and let load onec the level
+    private void checkCurrentScene()
+     {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SampleScene") && !mainMenuLevel && !isLoaded)
+        {
 
+            Debug.Log("LEVEL LOAD");
+            isLoaded = true;
+            sceneType();
+            Debug.Log("MUSIC NAME " + nameMusic);
+            MusicManager.Instance.Play(nameMusic, 0, true);
 
+            startGame();
+        }
+        else if (mainMenuLevel && !isLoaded)
+        {
+            Debug.Log("LOAD MENU");
+            isLoaded = true;
+            sceneType();
+            MusicManager.Instance.Play(nameMusic, 0, true);
+
+            startGame();
+        }
+    }
+    // We update the skin of the player form the savefile
+    public void updateSkin(PlayerType newSkin)
+    {
+        Debug.Log("LOAD: new " + newSkin.type);
+        // PlayerWithPhysic tempP = tempPlayer.GetComponent<PlayerWithPhysic>();
+        currentSkin = newSkin;
+        tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer = currentSkin;
+        tempPlayer.GetComponent<PlayerWithPhysic>().GetComponent<MeshRenderer>().material = currentSkin.skin;
+        StartCoroutine(tempPlayer.GetComponent<PlayerWithPhysic>().changeScale());
+        // tempP.GetComponent<Rigidbody>().mass = tempP.typePlayer.mass;
+        //tempPlayer.GetComponent<SkinLoader>().loadSkin(currentPlayerSkin);
+    }
+    /// ---------------------------------------------------------------///
+    
+
+    ///-------------------------BUILDING THE MAZE LEVEL-------------------------------------///
     public void setUpMazeLevel()// here we build the maze in base of the level (to expand)
     {
         buildmaze();
         addPlayer();
-    }
-
-    private void restartGame()
-    {
-        MusicManager.Instance.StopAll();
-        Destroy(tmpCamera.gameObject);
-        Destroy(tmpLevelManager);
-        Debug.Log("Restart");
-        restartLevel = true;
-        // endLevel = false;
-        playerDeath = false;
-        ScoringSystem.Instance.resetCurrentLevelScore();
-        ScoreCurrentLevel.instance.LevelComplete.gameObject.SetActive(false);
-        ScoreCurrentLevel.instance.coinCanvas.gameObject.SetActive(true);
-        StartCoroutine(Restart());
-        Destroy(mazeInstance.gameObject);
-        Destroy(tempGround);
-        Destroy(tempPlayer);
-
-        setUpMazeLevel();
-
-    }
-
-    public void changeMenuScene()
-    {
-        Destroy(mazeInstance.gameObject);
-        Destroy(tempGround);
-        Destroy(tempPlayer);
-        Destroy(tmpCamera.gameObject);
-        Destroy(tmpLevelManager);
-
-
-
-
-        setUpMazeLevel();
-
-    }
-    IEnumerator Restart()
-    {
-        yield return new WaitForSeconds(1f);
-        MusicManager.Instance.Play(nameMusic, 0, true);
-        // MusicManager.Instance.Play("Level1Background", 0, true);
-        // MusicManager.Instance.PlayMusic("Level1Music", true, 384.6f, 5);
-        // MusicManager.Instance.PlayMusic("Level1Background", true, 123f, 15);
-        restartLevel = false;
-
     }
     private void buildmaze()
     {
@@ -301,6 +291,8 @@ public class GameManager : Singleton<GameManager>
         mazeInstance = Instantiate(maze) as MazeSpawner;
         // Debug.Log(new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, 0, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2));
         tempGround = Instantiate(Ground, new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, 0, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2), Quaternion.Euler(0, 0, 0)) as GameObject;
+        tempGround.GetComponent<RotationWorld>().enabled = false;
+        StartCoroutine(WaitForFade());
         mazeInstance.transform.parent = tempGround.transform;
         tmpCamera = Instantiate(playerCamera, playerCamera.transform.position, playerCamera.transform.rotation) as Camera;
         tmpCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
@@ -316,9 +308,8 @@ public class GameManager : Singleton<GameManager>
             tempCameraPower.GetComponent<Camera>().enabled = false;
         }
         else tempCameraPower.transform.position = new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, heightPowerCamera, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2);
-
+        
     }
-
     public void addPlayer()
     {
         Debug.Log("ADD PLAYER");
@@ -346,28 +337,70 @@ public class GameManager : Singleton<GameManager>
         }
 
     }
-
-    public void updateSkin(PlayerType newSkin)
+    IEnumerator WaitForFade()
     {
-        Debug.Log("LOAD: new " + newSkin.type);
-        // PlayerWithPhysic tempP = tempPlayer.GetComponent<PlayerWithPhysic>();
-        currentSkin = newSkin;
-        tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer = currentSkin;
-        tempPlayer.GetComponent<PlayerWithPhysic>().GetComponent<MeshRenderer>().material = currentSkin.skin;
-        StartCoroutine(tempPlayer.GetComponent<PlayerWithPhysic>().changeScale());
-        // tempP.GetComponent<Rigidbody>().mass = tempP.typePlayer.mass;
-        //tempPlayer.GetComponent<SkinLoader>().loadSkin(currentPlayerSkin);
+       // AnimationClip[] clips = crossFade.GetComponent<Animator>().runtimeAnimatorController.animationClips;
+       // Debug.Log(clips);
+
+        yield return new WaitForSeconds(2.30f);
+        tempGround.GetComponent<RotationWorld>().enabled = true;
+
     }
-    public void resetGround()
+    /// ---------------------------------------------------------------///
+
+    ///--------------- RESTART GAME FUNCTIONALITY --------------------------------///
+    //restart the game scene if either the player is dead or the level is complete
+    private void restartGame()
     {
+        if(!playerDeath)
+         MusicManager.Instance.StopAll();
+        Destroy(tmpCamera.gameObject);
+        Destroy(tmpLevelManager);
+        Debug.Log("Restart");
+        restartLevel = true;
+        // endLevel = false;
+        playerDeath = false;
+        ScoringSystem.Instance.resetCurrentLevelScore();
+        ScoreCurrentLevel.instance.LevelComplete.gameObject.SetActive(false);
+        ScoreCurrentLevel.instance.coinCanvas.gameObject.SetActive(true);
+        StartCoroutine(Restart());
+        Destroy(mazeInstance.gameObject);
+        Destroy(tempGround);
+        Destroy(tempPlayer);
 
-        if (tempPlayer.gameObject.activeSelf == false)
-        {
-            tempGround.GetComponent<RotationWorld>().enabled = false;
-            //  Debug.Log("HERE");
-        }
+        setUpMazeLevel();
+
     }
+    /// Destory current Level
+    public void changeMenuScene()
+    {
+        Destroy(mazeInstance.gameObject);
+        Destroy(tempGround);
+        Destroy(tempPlayer);
+        Destroy(tmpCamera.gameObject);
+        Destroy(tmpLevelManager);
 
+
+
+
+        setUpMazeLevel();
+
+    }
+    //This is the courtine that fade in and out the music volume level
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(1f);
+        MusicManager.Instance.Play(nameMusic, 0, true);
+        restartLevel = false;
+
+    }
+    /// ---------------------------------------------------------------///
+
+
+
+
+
+    /// -------------------------GAME OVER FUNCTIONALITY--------------------------------///
     public void GameOver()
     {
         //if (tempPlayer.gameObject.GetComponent<PlayerWithPhysic>().playerDeath)
@@ -383,27 +416,51 @@ public class GameManager : Singleton<GameManager>
         else
         {
             playerLifes--;
+            restartLevel = true;
+          
         }
 
 
 
     }
+    
+    public void resetGround()
+    {
 
+        if (tempPlayer.gameObject.activeSelf == false)
+        {
+            tempGround.GetComponent<RotationWorld>().enabled = false;
+            //  Debug.Log("HERE");
+        }
+    }
+    /// ---------------------------------------------------------------///
+    ///LEVEL SELECTION IF PALYER LOST LIFE OR COMPLETED THE LEVEL///
     public void nextLevel()
     {
         endLevel = false;
         switch (currentLevel)
         {
             case 1:
-                Debug.Log("RETURN TO MENU");
 
-                currentLevel++;
-                typeScene = SceneLevel.Level2;
+                //t currentLevel = levelSelection(currentLevel);
+                // Debug.Log("LEVEL"+currentLevel);
+                // if (currentLevel != 1)
+                if (!playerDeath)
+                {
+                    currentLevel++;
+                    typeScene = SceneLevel.Level2;
+                }
+                else typeScene = SceneLevel.Level1;
                 sceneType();
                 restartGame();
                 break;
             case 2:
-                currentLevel++;
+                if (!playerDeath)
+                {
+                    currentLevel++;
+                    typeScene = SceneLevel.Level3;
+                }
+                else typeScene = SceneLevel.Level2 ;
                 typeScene = SceneLevel.Level3;
                 sceneType();
                 restartGame();
@@ -414,6 +471,13 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
 
+    }
+    private int levelSelection(int counter)
+    {
+        if (playerDeath)
+            return counter;
+        else
+            return counter++;
     }
 
     public void returnMenu()
@@ -431,29 +495,7 @@ public class GameManager : Singleton<GameManager>
         // sceneType();
         SceneManager.LoadScene("MainMenu");
     }
+    /// ---------------------------------------------------------------///
 
 
-    private void checkCurrentScene()
-    {
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SampleScene") && !mainMenuLevel && !isLoaded)
-        {
-
-            Debug.Log("LEVEL LOAD");
-            isLoaded = true;
-            sceneType();
-            Debug.Log("MUSIC NAME " + nameMusic);
-            MusicManager.Instance.Play(nameMusic, 0, true);
-
-            startGame();
-        }
-        else if (mainMenuLevel && !isLoaded)
-        {
-            Debug.Log("LOAD MENU");
-            isLoaded = true;
-            sceneType();
-            MusicManager.Instance.Play(nameMusic, 0, true);
-
-            startGame();
-        }
-    }
 }

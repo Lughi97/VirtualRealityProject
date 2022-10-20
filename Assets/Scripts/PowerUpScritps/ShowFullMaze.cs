@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Show the full maze for top view
+/// </summary>
 public class ShowFullMaze : MonoBehaviour
 {
 

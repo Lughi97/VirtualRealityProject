@@ -2440,7 +2440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4237597743983454253, guid: 1cba6a9ce814de144bbccdee501bcbf8, type: 3}
       propertyPath: playerLifes
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4237597743983454253, guid: 1cba6a9ce814de144bbccdee501bcbf8, type: 3}
       propertyPath: playerCamera

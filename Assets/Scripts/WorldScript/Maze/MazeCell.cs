@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Single maze cell with all attributes
+/// </summary>
 public enum Direction
 {
     Start,

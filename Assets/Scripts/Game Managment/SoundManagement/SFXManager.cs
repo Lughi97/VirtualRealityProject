@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Plays all the sfx of the game
+/// </summary>
 public class SFXManager : Singleton<SFXManager>
 {
     [Header("Sound Effects Clips")]

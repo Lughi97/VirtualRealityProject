@@ -18,21 +18,6 @@ public class CollectCollectabales : MonoBehaviour
     [SerializeField] private string nameCoin;
     public bool bounce = false;
 
-    /* public int ContentScore
-      {
-          get { return contentScore; }
-          set { switch (typeScore)
-              {
-                  case TypeScore.coin:
-                      contentScore = 10;
-                      break;
-                  case TypeScore.star:
-                      contentScore = 30;
-                      break;
-
-              } }
-      }
-      */
     private void Start()
     {
         switch (typeScore)
@@ -64,7 +49,7 @@ public class CollectCollectabales : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            sendScoreToSystem();
+          
            // Debug.Log("HIT");
             SFXManager.Instance.Play(nameCoin, 0, false);
             this.gameObject.SetActive(false);
@@ -90,7 +75,7 @@ public class CollectCollectabales : MonoBehaviour
         {
             Debug.Log("Play");
             SFXManager.Instance.Play(nameCoin, 0, false);
-            sendScoreToSystem();
+            
           
             
             this.gameObject.SetActive(false);
@@ -108,12 +93,7 @@ public class CollectCollectabales : MonoBehaviour
         StopCoroutine(ResetTrigger());
 
     }
-    public void sendScoreToSystem()
-    {
-        //Debug.Log(contentScore);
-
-
-    }
+   
     public void AddRigidbody()
     {
         this.gameObject.AddComponent<Rigidbody>();

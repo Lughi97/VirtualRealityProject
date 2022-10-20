@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
+/// <summary>
+/// Calculation of the Score of a single Level
+/// </summary>
 public class ScoreCurrentLevel : MonoBehaviour
 {
     [Header("COINS UI")]
@@ -39,11 +41,7 @@ public class ScoreCurrentLevel : MonoBehaviour
 
     public bool CR_running = false;
 
-    // private bool fadeIn = false;
     public bool fadeOut = false;
-
-    //[SerializeField]
-    //private Color[] coinColor;
     private void Awake()
     {
         instance = this;
@@ -55,11 +53,6 @@ public class ScoreCurrentLevel : MonoBehaviour
         LevelComplete.gameObject.SetActive(false);
         needToComplete.gameObject.SetActive(false);
         BoardMenu.SetActive(false);
-        //BoardMenu.gameObject.SetActive(false);
-        // coin = coinCanvas.gameObject.transform.GetChild(0).transform.GetChild(0);
-        //Color currentCoin = coin.GetComponent<MeshRenderer>().material.color;
-
-        //  coin.GetComponent<MeshRenderer>().material.color = currentCoin;
         coinCanvas.alpha = 0;
         bronzeText.text = bronzeCounter.ToString();
         silverText.text = silverCounter.ToString();
@@ -75,7 +68,6 @@ public class ScoreCurrentLevel : MonoBehaviour
     {
         if (currentMaterial.Length == 0)
         {
-            //  Debug.Log("EEEEEEEEY");
             currentMaterial = new Material[coins.Length];
 
             for (int i = 0; i < coins.Length; i++)
@@ -104,24 +96,16 @@ public class ScoreCurrentLevel : MonoBehaviour
 
 
     }
+    //We collect the coin and get the information about the score
     public void AddCoin(CollectCollectabales coin)
     {
-        //Debug.Log(coin.typeScore);
-        //CalculateCoins();
+       
+       
         coinCanvas.alpha = 1;
         for (int i = 0; i < coins.Length; i++)
         {
-
-            // coinColor[i] = coin[i].GetComponent<MeshRenderer>().material.color;
-            //  coinColor[i].a = 0f;
             coins[i].GetComponent<MeshRenderer>().material = currentMaterial[i];
-
-            //coin[i].GetComponent<MeshRenderer>().material.color = coinColor[i];
         }
-
-        //  Color currentCoin = coin.GetComponent<MeshRenderer>().material.color;
-        //currentCoin.a = 1;
-        // coin.GetComponent<MeshRenderer>().material.color = currentCoin;
         fadeOut = true;
         if (CR_running)
         {
@@ -153,7 +137,7 @@ public class ScoreCurrentLevel : MonoBehaviour
 
         }
     }
-
+    // Fade out the coins
     private IEnumerator fadeCoin()
     {
 
@@ -164,14 +148,7 @@ public class ScoreCurrentLevel : MonoBehaviour
             if (coinCanvas.alpha >= 0)
             {
                 coinCanvas.alpha -= 0.05f;
-                //   for (int i = 0; i < coin.Length; i++)
-                //  {
-                //coinColor[i] = coin[i].GetComponent<MeshRenderer>().material.color;
-                // coinColor[i].a -=0.05f;
-                //  }
-                //  Color currentCOlor = coin.GetComponent<MeshRenderer>().material.color;
-                // currentCOlor.a -= 0.05f;
-                // coin.GetComponent<MeshRenderer>().material.color = currentCOlor;
+           
             }
             if (coinCanvas.alpha == 0)
             {
@@ -187,17 +164,15 @@ public class ScoreCurrentLevel : MonoBehaviour
 
     }
 
-    
+    //Calculate the total level score gather by the collection of coins
     public void CalculateCoins()
     {
 
         int finalLevelScore = bronzeCounter * bronzeScore + silverCounter * silverScore + goldCounter * goldScore;
-        //Debug.Log(finalLevelScore);
-       
         ScoringSystem.Instance.getCurrentLevlCoinScore(finalLevelScore);
 
     }
-
+    // We activate the board with the highscore and current score 
     public void ShowCurrentLevelScore()
     {
         BoardMenu.gameObject.SetActive(true);
@@ -218,9 +193,9 @@ public class ScoreCurrentLevel : MonoBehaviour
                 break;
 
         }
-       // HighScoreLevel.text = "HighScore: " + ScoringSystem.instance.;
+    
     }
-
+    // show how many coins we need to collect to complete the level
     public IEnumerator notLevelComplete()
     {
         BoardMenu.gameObject.SetActive(true);

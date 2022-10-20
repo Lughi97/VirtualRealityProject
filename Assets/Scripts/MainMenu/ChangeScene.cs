@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+/// <summary>
+/// Main mechanic to change between scene and menu scenes
+/// </summary>
 public class ChangeScene : MonoBehaviour
 {
     public GameObject canvas;

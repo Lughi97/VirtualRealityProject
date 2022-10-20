@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Rotation of the ground of the game 
+/// </summary>
 public class RotationWorld : MonoBehaviour
 {
     public float turnSpeed = 3.0f;
@@ -11,13 +13,7 @@ public class RotationWorld : MonoBehaviour
     public float rotZ;
    // public float angle;
     public Vector3 currentRot;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
+    
     // Update is called once per frame
     private void FixedUpdate()
     {

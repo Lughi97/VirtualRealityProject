@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Functionality of the Arrow powerup that shows the direction of the goal
+/// </summary>
 public class ArrowToEndMaze : MonoBehaviour
 {
     [SerializeField]

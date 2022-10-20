@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
+/// <summary>
+/// This is the main score managment to get the highscore of each level
+/// </summary>
 [Serializable]
 public class coinValue
 {
@@ -22,13 +24,9 @@ public class ScoringSystem : Singleton<ScoringSystem>
 
     [SerializeField]
     private int scoreCoin;
-    //[SerializeField
-    // public CoinValue currentCoinValue;
     [SerializeField]
     coinValue currentCoin;
- //   [SerializeField]
     public List<coinValue> listCoins = new List<coinValue>();
-   // public Dictionary<TypeScore, int> coinCollection = new Dictionary<TypeScore, int>();
     [SerializeField]
     private int scoreDistance;
     public int currentScore = 0;
@@ -47,32 +45,25 @@ public class ScoringSystem : Singleton<ScoringSystem>
         }
 
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //we get the current coin score 
     public void getCurrentLevlCoinScore(int score)
     {
         scoreCoin = score;
         Debug.Log("CoinScore: " + scoreCoin);
     }
+    //get the distance score from the player
     public void getCurrentLevelDistanceScore(int score)
     {
         scoreDistance = score;
         Debug.Log("Score distance: " + scoreDistance);
     }
+    // find the total score
     public void getCurrentLevelTotalScore()
     {
         currentScore = scoreCoin + scoreDistance;
         updateLevelHighScore();
     }
+    //get the counter of all collected coins for the shop
     public void getCollectedCoins(int counter, CollectCollectabales coin)
     {
         currentCoin.type = coin.typeScore;
@@ -104,6 +95,7 @@ public class ScoringSystem : Singleton<ScoringSystem>
     
 
     }
+    // the temprary values of all subscore are resetted
     public void resetCurrentLevelScore()
     {
         currentScore = 0;
@@ -111,7 +103,7 @@ public class ScoringSystem : Singleton<ScoringSystem>
         scoreDistance = 0;
         // Debug.Log(Score);
     }
-
+    // Update the highscore of the current level
     public void updateLevelHighScore()
     {
         //Debug.Log("HELLO THERE");

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+/// <summary>
+/// Behavior when the player dies
+/// </summary>
 public class GameOver : MonoBehaviour
 {
     public GameObject gameOver;

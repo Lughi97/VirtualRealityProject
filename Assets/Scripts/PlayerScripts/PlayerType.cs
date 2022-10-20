@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+/// <summary>
+/// Scriptable object used to define different type of player depending on the skin
+/// </summary>
 [Serializable]
 public enum typeBall
 {

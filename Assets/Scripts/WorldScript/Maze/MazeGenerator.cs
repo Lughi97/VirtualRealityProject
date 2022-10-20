@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The main generator of any maze
+/// </summary>
 public abstract class MazeGenerator
 {
-    //used to obtain the rows and coloms of the private variable
+   
 
     //Used to obtain the Row and Column from the private variables 
     public int RowCount { get { return mMazeRows; } }
@@ -37,6 +40,7 @@ public abstract class MazeGenerator
     }
     //called by the algorithm class to start the algorithm
     public abstract void GenerateMaze();
+    // insert the maze cell in the array
     public MazeCell GetMazeCell(int row, int column)
     {
         if (row >= 0 && column >= 0 && row < mMazeRows && column < mMazeColumns)

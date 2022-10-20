@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Accelerate the player in it's direction
+/// </summary>
 public class SpeedUp : MonoBehaviour
 {
     public Vector3 Direction;

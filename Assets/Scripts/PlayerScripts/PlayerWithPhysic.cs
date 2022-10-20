@@ -53,7 +53,6 @@ public class PlayerWithPhysic : MonoBehaviour
         TopXZspeed = typePlayer.maxXZVelocity;
         rbPlayer.mass = typePlayer.mass;
         speedMultiplier = typePlayer.speedSlopeBoost;
-        //gameObject.GetComponent<MeshRenderer>().material = typePlayer.skin;
 
     }
 
@@ -136,8 +135,6 @@ public class PlayerWithPhysic : MonoBehaviour
             Debug.Log("FAST right");
             rbPlayer.velocity += Vector3.right * speedMultiplier;
         }
-        //else if (anglex < 0)
-        //    rbPlayer.velocity += Vector3.back * speedMultiplier;
 
     }
     private void clampVelocity()

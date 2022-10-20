@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+/// <summary>
+/// Show all the coins collected by the player
+/// </summary>
 public class ShowCoins : MonoBehaviour
 {
     public TextMeshProUGUI bronzeText;

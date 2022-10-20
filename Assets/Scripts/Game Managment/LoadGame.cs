@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/// <summary>
+/// Load the new level or load to the menu if game over
+/// </summary>
 public static class LoadGame
 {
     public static GameObject woodBoard;
@@ -22,43 +24,19 @@ public static class LoadGame
         SceneManager.LoadScene(sceneName);
         woodBoard.SetActive(false);
     }
-    /*
-    public static async void LoadScene(string sceneName)
-    {
-        var scene = SceneManager.LoadSceneAsync(sceneName);
-        scene.allowSceneActivation = false;
-
-        //woodBoard.SetActive(true);
-        crossFade.SetTrigger("Start");
-        await Task.Delay(3000);
-
-        scene.allowSceneActivation = true;
-        woodBoard.SetActive(false);
-
-    }
-    */
+  
+    // load the new level in the same scene 
     public static IEnumerator load(Animator animator)
     {
 
         animator.SetTrigger("Start");
         yield return new WaitForSeconds(3f);
-         GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled = false;
-        // if (GameManager.Instance.isGameOver==false) {
+         GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled =false ;
         Debug.Log("HEELO THHHHEHEHRERE");
         animator.SetTrigger("Start");
         GameManager.Instance.nextLevel();
-        yield return new WaitForSeconds(1.5f);
-        GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled = true;
-
-        //  }
-        // else
-        //  {
-
-        //    GameManager.Instance.returnMenu();
-        //woodBoard.SetActive(true);
-        //crossFade.SetTrigger("Start");
-        // }
-
+       // yield return new WaitForSeconds(1.5f);
+        
 
     }
 
@@ -73,8 +51,5 @@ public static class LoadGame
         Debug.Log("CHANGE");
         GameManager.Instance.mainMenuLevel = true;
         SceneManager.LoadScene("MainMenu");
-
-
-        //cross fade from this to next scene 
     }
 }
