@@ -95,7 +95,7 @@ public class RecursiveMazeAlgorithm : MazeGenerator
             }
             for (int i = movesAvailableCount; i > 0; i--)
             {
-                Debug.Log("Maze Cell has " + movesAvailable[i] + " Open direction");
+                //Debug.Log("Maze Cell has " + movesAvailable[i] + " Open direction");
             }
         } while (movesAvailableCount > 0);// unitll we run out of moves
        

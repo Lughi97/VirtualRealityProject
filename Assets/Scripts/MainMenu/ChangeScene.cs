@@ -31,19 +31,19 @@ public class ChangeScene : MonoBehaviour
                     break;
                 case "LevelTrigger":
                     GameManager.Instance.typeScene = SceneLevel.HighScoreMenu;
-                    goToNewScene();
+                    StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
                 case "SettingTrigger":
                     GameManager.Instance.typeScene = SceneLevel.Settings;
-                    goToNewScene();
+                    StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
                 case "ShopTrigger":
                     GameManager.Instance.typeScene = SceneLevel.Shop;
-                   goToNewScene();
+                    StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
                 case "ReturnMenuTrigger":
                     GameManager.Instance.typeScene = SceneLevel.MainMenu;
-                    goToNewScene();
+                    StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
                 case "QuitTrigger":
                     Debug.Log("QUIT GAME");
@@ -66,15 +66,5 @@ public class ChangeScene : MonoBehaviour
         //SceneManager.LoadScene("SampleScene");
         LoadGame.getBoard(board,panel.GetComponent<Animator>());
         StartCoroutine(LoadGame.LoadScene("SampleScene"));
-    }
-    void goToNewScene()
-    {
-        // Destroy(GameManager.Instance.tmpCamera.gameObject);
-        //Debug.Log("CHANGE SCENE IN 2 SECONDS");
-        //yield return new WaitForSeconds(2f);
-        // GameManager.Instance.isLoaded = false;
-        
-        GameManager.Instance.changeMenuScene();
-        //SceneManager.LoadScene("SampleScene");
     }
 }

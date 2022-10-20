@@ -26,13 +26,13 @@ public static class LoadGame
     }
   
     // load the new level in the same scene 
-    public static IEnumerator load(Animator animator)
+    public static IEnumerator loadNextLevel(Animator animator)
     {
 
         animator.SetTrigger("Start");
         yield return new WaitForSeconds(3f);
          GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled =false ;
-        Debug.Log("HEELO THHHHEHEHRERE");
+       
         animator.SetTrigger("Start");
         GameManager.Instance.nextLevel();
        // yield return new WaitForSeconds(1.5f);
@@ -40,6 +40,7 @@ public static class LoadGame
 
     }
 
+    // change to the menu scene
     public static IEnumerator  loadToMainMenu(Animator animator)
     {
         animator.SetTrigger("Start");
@@ -51,5 +52,15 @@ public static class LoadGame
         Debug.Log("CHANGE");
         GameManager.Instance.mainMenuLevel = true;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    //change between different menu type in te same scene
+    public static IEnumerator loadNewMenu(Animator animator)
+    {
+        animator.speed = 2f;
+        animator.SetTrigger("Start");
+        yield return new WaitForSeconds(2f);
+        animator.SetTrigger("Start");
+
     }
 }

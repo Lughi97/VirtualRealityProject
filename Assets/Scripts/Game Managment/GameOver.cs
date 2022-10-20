@@ -21,7 +21,7 @@ public class GameOver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.playerDeath)
+        if (GameManager.Instance.playerDeath|| GameManager.Instance.isGameOver)
         {
             boardWood.SetActive(true);
             gameOver.SetActive(true);
@@ -30,7 +30,7 @@ public class GameOver : MonoBehaviour
         {
             gameOver.SetActive(false);
            // boardWood.SetActive(false);
-            lifesLeft.text = "Balls remaining: " + GameManager.Instance.playerLifes + "\n Press Space to try again.";
+            lifesLeft.text = "Balls remaining: " + (GameManager.Instance.playerLifes) + "\n Press Space to try again.";
         }
     }
 }

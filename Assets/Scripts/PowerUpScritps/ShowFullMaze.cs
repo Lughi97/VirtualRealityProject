@@ -50,7 +50,8 @@ public class ShowFullMaze : MonoBehaviour
 
         if (GameManager.Instance.restartLevel == true)
         {
-            StopAllCoroutines();
+            //StopAllCoroutines();
+            StopCoroutine(powerUpCoolDown());
         }
     }
 

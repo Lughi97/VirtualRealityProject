@@ -91,6 +91,7 @@ public class GameManager : Singleton<GameManager>
         //startGame();
         // MusicManager.Instance.Play(nameMusic, 0, true);
         StartCoroutine(waitForTitle());
+        //StartCoroutine(checkStatusGame());
     }
     private IEnumerator waitForTitle()
     {
@@ -201,47 +202,110 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// ----------------------UPDATE CHECKING OF THE GAME MANAGER -------------------------///
+
     void Update()
     {
         checkCurrentScene();
+        /*
+         if (!mainMenuLevel)
+         {
 
-        if (!mainMenuLevel)
+             if ((endLevel || playerDeath) && (Input.GetKeyDown(KeyCode.Space)))
+             {
+
+                 Debug.Log("SAVE");
+                 endLevel = false;
+                 if (!playerDeath)
+                 {
+                     SaveSystem.SaveScore(ScoringSystem.Instance);
+                 }
+                 Debug.Log("LEVEL ENDED" + endLevel);
+                 StartCoroutine(LoadGame.loadNextLevel(crossFade.GetComponent<Animator>()));
+                 // nextLevel();
+
+             }
+             else if (isGameOver && (Input.GetKeyDown(KeyCode.Space)))
+             {
+                // Debug.Log("SAVE");
+                 Debug.Log("END GAME IS HERE");
+                 //LoadGame.load(crossFade.GetComponent<Animator>());
+                 returnMenu();
+
+
+             }
+             if (tempPlayer == null)
+             {
+                 tempPlayer = GameObject.Find("Player(Clone)");
+             }
+             else
+             {
+                 resetGround();
+             }
+         }
+         */
+     }
+    public void callCheckCorutne()
+    {
+        StartCoroutine("checkStatusGame");
+    }
+     
+        public IEnumerator checkStatusGame()
+    {
+        while (true)
         {
-
-            if ((endLevel || playerDeath) && (Input.GetKeyDown(KeyCode.Space)))
+          //  checkCurrentScene();
+          
+            if (!mainMenuLevel)
             {
 
-                Debug.Log("SAVE");
-                if (!playerDeath)
+                if ((endLevel || playerDeath) && (Input.GetKeyDown(KeyCode.Space)))
                 {
-                    SaveSystem.SaveScore(ScoringSystem.Instance);
+
+                    Debug.Log("SAVE");
+                    endLevel = false;
+                    if (!playerDeath)
+                    {
+                        SaveSystem.SaveScore(ScoringSystem.Instance);
+                    }
+                    Debug.Log("LEVEL ENDED" + endLevel);
+                    StartCoroutine(LoadGame.loadNextLevel(crossFade.GetComponent<Animator>()));
+                    // nextLevel();
+
                 }
-                StartCoroutine(LoadGame.load(crossFade.GetComponent<Animator>()));
-                // nextLevel();
-
-            }
-            else if (isGameOver && (Input.GetKeyDown(KeyCode.Space)))
-            {
-                Debug.Log("SAVE");
-                Debug.Log("END GAME IS HERE");
-                //LoadGame.load(crossFade.GetComponent<Animator>());
-                returnMenu();
+                else if (isGameOver && (Input.GetKeyDown(KeyCode.Space)))
+                {
+                    // Debug.Log("SAVE");
+                    Debug.Log("END GAME IS HERE");
+                    //LoadGame.load(crossFade.GetComponent<Animator>());
+                    returnMenu();
 
 
+                }
+                if (tempPlayer == null)
+                {
+                    tempPlayer = GameObject.Find("Player(Clone)");
+                }
+                else
+                {
+                    resetGround();
+                }
+ 
+               
             }
-            if (tempPlayer == null)
-            {
-                tempPlayer = GameObject.Find("Player(Clone)");
-            }
-            else
-            {
-                resetGround();
-            }
+            Debug.Log("THIS IS LOOPING");
+            Debug.Log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+            if (Input.GetKeyUp(KeyCode.Space))
+              {
+                  Debug.Log("STOP");
+                 StopCoroutine("checkStatusGame");
+              }
+            yield return null;
+
         }
 
     }
     //Check in wich Unity Scnen the game is corrently in and let load onec the level
-    private void checkCurrentScene()
+    public void checkCurrentScene()
      {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SampleScene") && !mainMenuLevel && !isLoaded)
         {
@@ -287,9 +351,7 @@ public class GameManager : Singleton<GameManager>
     }
     private void buildmaze()
     {
-        //Debug.Log("StartGame");
         mazeInstance = Instantiate(maze) as MazeSpawner;
-        // Debug.Log(new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, 0, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2));
         tempGround = Instantiate(Ground, new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, 0, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2), Quaternion.Euler(0, 0, 0)) as GameObject;
         tempGround.GetComponent<RotationWorld>().enabled = false;
         StartCoroutine(WaitForFade());
@@ -303,7 +365,6 @@ public class GameManager : Singleton<GameManager>
         }
         if (tempCameraPower == null)
         {
-            //Debug.Log("TEMP CAMERA");
             tempCameraPower = Instantiate(powerUpCamera, new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, heightPowerCamera, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2), Quaternion.Euler(90, 0, 0)) as GameObject;
             tempCameraPower.GetComponent<Camera>().enabled = false;
         }
@@ -371,9 +432,13 @@ public class GameManager : Singleton<GameManager>
         setUpMazeLevel();
 
     }
-    /// Destory current Level
-    public void changeMenuScene()
+    /// chage the current menu scene type
+    public IEnumerator changeMenuScene()
     {
+        tempPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+
+        StartCoroutine(LoadGame.loadNewMenu(crossFade.GetComponent<Animator>()));
+        yield return new WaitForSeconds(2f);
         Destroy(mazeInstance.gameObject);
         Destroy(tempGround);
         Destroy(tempPlayer);
@@ -382,7 +447,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
-
+        
         setUpMazeLevel();
 
     }
@@ -404,9 +469,9 @@ public class GameManager : Singleton<GameManager>
     public void GameOver()
     {
         //if (tempPlayer.gameObject.GetComponent<PlayerWithPhysic>().playerDeath)
-        playerDeath = true;
 
-        if (playerLifes == 0)
+
+        if (playerLifes <= 0)
         {
             Debug.Log("RETURN TO MENU GAME OVER");
 
@@ -415,6 +480,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
+            playerDeath = true;
             playerLifes--;
             restartLevel = true;
           
@@ -438,37 +504,47 @@ public class GameManager : Singleton<GameManager>
     public void nextLevel()
     {
         endLevel = false;
-        switch (currentLevel)
+        Debug.Log("END: " + endLevel);
+        Debug.Log("LEVEL: " + currentLevel);
+        if (playerLifes >= 0)
         {
-            case 1:
+            switch (currentLevel)
+            {
+                case 1:
+                    if (!playerDeath)
+                    {
+                        currentLevel++;
+                        typeScene = SceneLevel.Level2;
+                    }
+                    else typeScene = SceneLevel.Level1;
+                    sceneType();
+                    restartGame();
+                    break;
+                case 2:
+                    if (!playerDeath)
+                    {
+                        currentLevel++;
+                        typeScene = SceneLevel.Level3;
+                    }
+                    else typeScene = SceneLevel.Level2;
+                    sceneType();
+                    restartGame();
+                    break;
+                case 3:
+                    if (!playerDeath)
+                    {
+                        Debug.Log("RETURN TO MENU");
+                        returnMenu();
+                    }
+                    else
+                    {
+                        typeScene = SceneLevel.Level3;
+                    }
 
-                //t currentLevel = levelSelection(currentLevel);
-                // Debug.Log("LEVEL"+currentLevel);
-                // if (currentLevel != 1)
-                if (!playerDeath)
-                {
-                    currentLevel++;
-                    typeScene = SceneLevel.Level2;
-                }
-                else typeScene = SceneLevel.Level1;
-                sceneType();
-                restartGame();
-                break;
-            case 2:
-                if (!playerDeath)
-                {
-                    currentLevel++;
-                    typeScene = SceneLevel.Level3;
-                }
-                else typeScene = SceneLevel.Level2 ;
-                typeScene = SceneLevel.Level3;
-                sceneType();
-                restartGame();
-                break;
-            case 3:
-                Debug.Log("RETURN TO MENU");
-                returnMenu();
-                break;
+                    sceneType();
+                    restartGame();
+                    break;
+            }
         }
 
     }
@@ -493,6 +569,7 @@ public class GameManager : Singleton<GameManager>
         SFXManager.Instance.StopAll();
         typeScene = SceneLevel.MainMenu;
         // sceneType();
+        playerLifes = 1;
         SceneManager.LoadScene("MainMenu");
     }
     /// ---------------------------------------------------------------///

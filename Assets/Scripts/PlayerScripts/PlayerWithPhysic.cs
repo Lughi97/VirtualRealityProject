@@ -95,44 +95,44 @@ public class PlayerWithPhysic : MonoBehaviour
         float angle = rot.rotX + rot.rotZ;
         if (anglex > 5 && anglex <= 9)
         {
-            Debug.Log("Slow FOWARD");
+          //  Debug.Log("Slow FOWARD");
             rbPlayer.velocity += Vector3.forward / 5;
         }
         else if (anglex > 10 && anglex <= 15)
         {
-            Debug.Log("FAST FOWARD");
+           // Debug.Log("FAST FOWARD");
             rbPlayer.velocity += Vector3.forward * speedMultiplier;
         }
 
         if (anglex < -5 && anglex >= -8)
         {
-            Debug.Log("Slow BACK");
+         //   Debug.Log("Slow BACK");
             rbPlayer.velocity += Vector3.back / 5;
         }
         else if (anglex < -9 && anglex >= -15)
         {
-            Debug.Log("FAST BACK");
+          //  Debug.Log("FAST BACK");
             rbPlayer.velocity += Vector3.back * speedMultiplier;
         }
         if (anglez > 5 && anglez <= 9)
         {
-            Debug.Log("Slow left");
+         //   Debug.Log("Slow left");
             rbPlayer.velocity += Vector3.left / 5;
         }
         else if (anglez > 10 && anglez <= 15)
         {
-            Debug.Log("FAST left");
+            //Debug.Log("FAST left");
             rbPlayer.velocity += Vector3.left * speedMultiplier;
         }
 
         if (anglez < -5 && anglez >= -8)
         {
-            Debug.Log("Slow right");
+            //Debug.Log("Slow right");
             rbPlayer.velocity += Vector3.right / 5;
         }
         else if (anglez < -9 && anglez >= -15)
         {
-            Debug.Log("FAST right");
+          // Debug.Log("FAST right");
             rbPlayer.velocity += Vector3.right * speedMultiplier;
         }
 
@@ -185,6 +185,8 @@ public class PlayerWithPhysic : MonoBehaviour
             {
                 string currentName = "PlayerDeath";
                 playGameEffects(currentName, 0);
+                GameManager.Instance.callCheckCorutne();
+                //StartCoroutine(GameManager.Instance.checkStatusGame());
                 GameManager.Instance.GameOver();
                 // Debug.Log("LOSE LIFE");
                 hidePlayer();
@@ -302,6 +304,8 @@ public class PlayerWithPhysic : MonoBehaviour
         ScoringSystem.Instance.getCurrentLevelDistanceScore(score);
         ScoringSystem.Instance.getCurrentLevelTotalScore();
         ScoreCurrentLevel.instance.ShowCurrentLevelScore();
+        GameManager.Instance.callCheckCorutne();
+        //StartCoroutine(GameManager.Instance.checkStatusGame());
     }
     public IEnumerator changeScale()
     {
