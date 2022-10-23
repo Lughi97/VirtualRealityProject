@@ -244,6 +244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e982584c5b1f6894587295d69315af0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  board: {fileID: 0}
+  panel: {fileID: 0}
 --- !u!1 &9089867544276434110
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,8 +315,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Shop '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: edf91234f22447d4d9b31f1164a54a9b, type: 2}
+  m_sharedMaterial: {fileID: 38232579268349939, guid: edf91234f22447d4d9b31f1164a54a9b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

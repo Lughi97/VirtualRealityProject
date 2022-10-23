@@ -91,7 +91,8 @@ public class ScoreCurrentLevel : MonoBehaviour
             silverText.text = silverCounter.ToString();
             goldText.text = goldCounter.ToString();
             coinCanvas.alpha = 0f;
-            StopAllCoroutines();
+            StopCoroutine(fadeCoin());
+            StopCoroutine(notLevelComplete());
         }
 
 
@@ -201,7 +202,12 @@ public class ScoreCurrentLevel : MonoBehaviour
         BoardMenu.gameObject.SetActive(true);
         needToComplete.gameObject.SetActive(true);
         needToComplete.text = "You need to collect " + GameManager.Instance.tmpLevelManager.GetComponent<LevelManagement>().coinsLeft + " Coins to complete the level";
-        yield return new WaitForSeconds(5f);
+        if (GameManager.Instance.isGameOver)
+        {
+            BoardMenu.gameObject.SetActive(false);
+            needToComplete.gameObject.SetActive(false);
+        }
+        yield return new WaitForSeconds(3f);
         BoardMenu.gameObject.SetActive(false);
         needToComplete.gameObject.SetActive(false);
     }

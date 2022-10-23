@@ -26,14 +26,21 @@ public static class LoadGame
     }
   
     // load the new level in the same scene 
-    public static IEnumerator loadNextLevel(Animator animator)
+    public static IEnumerator loadNextLevel(GameObject canvas)
     {
+        crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
+        crossFade.SetTrigger("Start");
+        AnimatorClipInfo[] clips = crossFade.GetCurrentAnimatorClipInfo(0);
+        //Fetch the current Animation clip information for the base layer
+        float lenght = clips[0].clip.length;
+        Debug.Log("TIME " + lenght);
+        //Access the current length of the clip
+        yield return new WaitForSeconds(lenght);
+        GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled =false ;
+        crossFade.SetTrigger("Start");
 
-        animator.SetTrigger("Start");
-        yield return new WaitForSeconds(3f);
-         GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled =false ;
-       
-        animator.SetTrigger("Start");
+        yield return new WaitForSeconds(1);
+
         GameManager.Instance.nextLevel();
        // yield return new WaitForSeconds(1.5f);
         
@@ -41,9 +48,11 @@ public static class LoadGame
     }
 
     // change to the menu scene
-    public static IEnumerator  loadToMainMenu(Animator animator)
+    public static IEnumerator  loadToMenuFormTitle(GameObject canvas)
     {
-        animator.SetTrigger("Start");
+
+        crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
+        crossFade.SetTrigger("Start");
 
         GameManager.Instance.typeScene = SceneLevel.MainMenu;
         yield return new WaitForSeconds(3f);
@@ -53,14 +62,55 @@ public static class LoadGame
         GameManager.Instance.mainMenuLevel = true;
         SceneManager.LoadScene("MainMenu");
     }
-
-    //change between different menu type in te same scene
-    public static IEnumerator loadNewMenu(Animator animator)
+    public static IEnumerator loadMainMenuFromGame(GameObject canvas)
     {
-        animator.speed = 2f;
-        animator.SetTrigger("Start");
+
+        crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
+        AnimatorClipInfo[] clips = crossFade.GetCurrentAnimatorClipInfo(0);
+        float lenght = clips[0].clip.length;
+        crossFade.SetTrigger("Start");
+       
+      
+
+        yield return new WaitForSeconds(lenght);
+
+        GameManager.Instance.playerDeath = false;
+        Debug.Log("LOAD MENU SCENE");
+        GameManager.Instance.isLoaded = false;
+        GameManager.Instance.mainMenuLevel = true;
+        GameManager.Instance.isGameOver = false;
+        MusicManager.Instance.StopAll();
+        SFXManager.Instance.StopAll();
+
+        GameManager.Instance.playerLifes = 1;
+        GameManager.Instance.typeScene = SceneLevel.MainMenu;
+        Debug.Log("CHANGE");
+        GameManager.Instance.mainMenuLevel = true;
+        SceneManager.LoadScene("MainMenu");
+    }
+    //change between different menu type in te same scene
+    public static IEnumerator loadNewMenu(GameObject canvas)
+    {
+        crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
+        crossFade.speed = 2f;
+        crossFade.SetTrigger("Start");
         yield return new WaitForSeconds(2f);
-        animator.SetTrigger("Start");
+        crossFade.SetTrigger("Start");
+
+    }
+   public static IEnumerator WaitForFade(GameObject canvas)
+    {
+        // AnimationClip[] clips = crossFade.GetComponent<Animator>().runtimeAnimatorController.animationClips;
+        // Debug.Log(clips);
+        //Get them_Animator, which you attach to the GameObject you intend to animate.
+        crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
+        AnimatorClipInfo[] clips = crossFade.GetCurrentAnimatorClipInfo(0);
+        //Fetch the current Animation clip information for the base layer
+        float lenght = clips[0].clip.length;
+        Debug.Log("TIME " + lenght);
+        //Access the current length of the clip
+        yield return new WaitForSeconds(lenght);
+        GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled = true;
 
     }
 }

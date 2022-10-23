@@ -34,11 +34,10 @@ public class ArrowToEndMaze : MonoBehaviour
     private void Update()
     {
 
-        if (GameManager.Instance.restartLevel == true)
+        if (!GameManager.Instance.tempPlayer.activeSelf)
         {
-            Debug.Log("HELLO THIS IS THE RESTART");
+            Debug.Log("HELLO THIS IS THE Destruction of temp arrow");
             Destroy(gameObject);
-            StopAllCoroutines();
 
         }
         if (lookAtTarget != null)

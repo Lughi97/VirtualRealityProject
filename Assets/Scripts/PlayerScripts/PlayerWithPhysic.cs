@@ -198,22 +198,35 @@ public class PlayerWithPhysic : MonoBehaviour
     {
         if (other.gameObject.tag == "CameraPowerUp")
         {
-            Debug.Log("HITPOWERCAMERA");
-            StartCoroutine(other.GetComponent<ShowFullMaze>().powerUpCoolDown());
-            other.gameObject.SetActive(false);
-            string currentName = "CameraSnap";
+            if (!ActivePower.powerCameraActive)
+            {
+                
+                Debug.Log("HITPOWERCAMERA");
+                 StartCoroutine(other.GetComponent<ShowFullMaze>().coolDown());
+               
+                other.gameObject.SetActive(false);
+                string currentName = "CameraSnap";
 
-            playGameEffects(currentName, 0);
+                playGameEffects(currentName, 0);
+            }
 
         }
         if (other.gameObject.tag == "ArrowPowerUp")
         {
-            StartCoroutine(other.GetComponent<SpawnArrow>().spawnArrow());
-            other.gameObject.SetActive(false);
-            string currentName = "ArrowPower";
+
+            if (!ActivePower.powerArrowActive)
+            {
+                StartCoroutine(other.GetComponent<SpawnArrow>().coolDown());
+                //other.GetComponent<SpawnArrow>().stratCoolDown();
+                other.gameObject.SetActive(false);
+                string currentName = "ArrowPower";
 
 
-            playGameEffects(currentName, 0);
+                playGameEffects(currentName, 0);
+            }
+                
+               
+          
         }
         else if (other.gameObject.tag == "Coin")
         {

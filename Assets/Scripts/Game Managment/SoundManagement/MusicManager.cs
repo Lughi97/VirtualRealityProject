@@ -8,6 +8,8 @@ using UnityEngine;
 public class MusicManager : Singleton<MusicManager>
 {
     [SerializeField] private AudioSource[] audioSources;
+    //public float[] clipSampleData;
+    //public int sampleDataLenght = 1024;
     [SerializeField] private Dictionary<string, AudioSource> musicList;
 
     void Awake()
@@ -31,12 +33,14 @@ public class MusicManager : Singleton<MusicManager>
             musicList[source.gameObject.name] = source;
             // musicList[source.clip.name] = source;
         }
-
+       // clipSampleData = new float[sampleDataLenght];
     }
+    
     public void Play(string name, float pitchVariance = 0, bool loop = true)
     {
         if (musicList.ContainsKey(name))
         {
+           // musicList[name].clip.GetData(clipSampleData,musicList[name].timeSamples);
             if (pitchVariance != 0) musicList[name].pitch = 1 + Random.Range(-pitchVariance, pitchVariance);
 
            if (!musicList[name].isPlaying)
@@ -56,6 +60,9 @@ public class MusicManager : Singleton<MusicManager>
 
        
     }
+    
+   
+    /*
     public void PlayMusic(string name, bool repeated = false, float duration = 0, int n_times = 1, float pitchVariance = 0)
     {
         if (musicList.ContainsKey(name))
@@ -73,7 +80,7 @@ public class MusicManager : Singleton<MusicManager>
         }
         else Debug.LogWarning("No sound of name " + name + " exists");
     }
-
+    */
     IEnumerator PlayMusicRepeated(string name, float duration, int n_times)
     {
         for (int i = 0; i < n_times; i++)
@@ -88,7 +95,7 @@ public class MusicManager : Singleton<MusicManager>
     }
     public void StopAll()
     {
-        StopAllCoroutines();
+        StopCoroutine("PlayMusicRepeated");
         for (int i = 0; i < audioSources.Length; i++)
             audioSources[i].Stop();
     }

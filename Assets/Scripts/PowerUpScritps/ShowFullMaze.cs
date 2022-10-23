@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Show the full maze for top view
 /// </summary>
-public class ShowFullMaze : MonoBehaviour
+public class ShowFullMaze : PowerTemplate
 {
 
     public Camera mainCamera;
@@ -25,6 +25,10 @@ public class ShowFullMaze : MonoBehaviour
     }
 
     void Update()
+    {
+        checkStatusGame();
+    }
+    public override void checkStatusGame()
     {
         if (powerUpCamera == null)
         {
@@ -48,22 +52,24 @@ public class ShowFullMaze : MonoBehaviour
             }
         }
 
-        if (GameManager.Instance.restartLevel == true)
+        if (GameManager.Instance.endLevel || GameManager.Instance.playerDeath || GameManager.Instance.isGameOver)
         {
-            //StopAllCoroutines();
-            StopCoroutine(powerUpCoolDown());
+            Debug.Log("THIS IS TEST TO Stop the powerup");
+            mainCamera.enabled = true;
+            power.enabled = false;
+            StopCoroutine(coolDown());
         }
+        //throw new System.NotImplementedException();
     }
-
-
-
-    public IEnumerator powerUpCoolDown()
+    public override IEnumerator coolDown()
     {
+        ActivePower.powerCameraActive = true;
         mainCamera.enabled = !mainCamera.enabled;
 
         power.enabled = !power.enabled;
 
         yield return new WaitForSeconds(timer);
+        ActivePower.powerCameraActive = false;
         Debug.Log("HEY");
         mainCamera.enabled = !mainCamera.enabled;
         power.enabled = !power.enabled;

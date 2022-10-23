@@ -27,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Level Management")]
     //Selecet Scene
     public SceneLevel typeScene;
+    //Menu check
     public bool mainMenuLevel;
     public int mazeRows;
     public int mazeColums;
@@ -44,14 +45,19 @@ public class GameManager : Singleton<GameManager>
     public GameObject tempGround;
     public GameObject Player;
     public GameObject tempPlayer;
+    // if the level restart 
     public bool restartLevel = false;
+    // if the scene is loaded
     public bool isLoaded = false;
+    // if the level is ended
     public bool endLevel = false;
+    //if the player lost the game 
     public bool isGameOver = false;
+    // is the player dead
     public bool playerDeath = false;
-    private string nameMusic;
+    public string nameMusic;
     [SerializeField] private GameObject canvas;
-    public GameObject crossFade;
+    //public GameObject crossFade;
 
 
     [Header("Player")]
@@ -69,7 +75,7 @@ public class GameManager : Singleton<GameManager>
     //[SerializeField] public static GameManager instance = null;
     private void Awake()
     {
-        if (FindObjectsOfType(typeof(SFXManager)).Length > 1)
+        if (FindObjectsOfType(typeof(GameManager)).Length > 1)
         {
             Destroy(gameObject);
         }
@@ -88,16 +94,13 @@ public class GameManager : Singleton<GameManager>
             currentSkin = SaveSystem.loadType();
         else
             currentSkin = skinsPlayer[0];
-        //startGame();
-        // MusicManager.Instance.Play(nameMusic, 0, true);
         StartCoroutine(waitForTitle());
-        //StartCoroutine(checkStatusGame());
     }
     private IEnumerator waitForTitle()
     {
         Debug.Log("START ANIMATION");
         yield return new WaitForSeconds(6f);
-        StartCoroutine(LoadGame.loadToMainMenu(crossFade.GetComponent<Animator>()));
+        StartCoroutine(LoadGame.loadToMenuFormTitle(canvas));
     }
     public void sceneType()
     {
@@ -107,7 +110,7 @@ public class GameManager : Singleton<GameManager>
                 /// nameMusic = "MainMenuMusic";
                 canvas = GameObject.Find("TitleCardCanvas");
 
-                crossFade = canvas.transform.Find("CrossFade").gameObject; ;
+                //crossFade = canvas.transform.Find("CrossFade").gameObject; ;
                 if (SaveSystem.LoadHighScores() != null)
                 {
                     // Debug.Log("HELLO SCORES");
@@ -144,7 +147,7 @@ public class GameManager : Singleton<GameManager>
                 }
                 canvas = GameObject.Find("MainMenuCanvas");
 
-                crossFade = canvas.transform.Find("CrossFade").gameObject;
+                //crossFade = canvas.transform.Find("CrossFade").gameObject;
 
                 //load MainMenuScene
                 break;
@@ -162,7 +165,7 @@ public class GameManager : Singleton<GameManager>
                 //loadLevel1
                 canvas = GameObject.Find("LevelCanvas");
 
-                crossFade = canvas.transform.Find("CrossFade").gameObject;
+               // crossFade = canvas.transform.Find("CrossFade").gameObject;
                 currentLevel = 1;
                 mazeRows = 4;
                 mazeColums = 4;
@@ -172,7 +175,7 @@ public class GameManager : Singleton<GameManager>
             case SceneLevel.Level2:
                 canvas = GameObject.Find("LevelCanvas");
 
-                crossFade = canvas.transform.Find("CrossFade").gameObject;
+                //crossFade = canvas.transform.Find("CrossFade").gameObject;
                 currentLevel = 2;
                 mazeRows = 6;
                 mazeColums = 6;
@@ -183,7 +186,7 @@ public class GameManager : Singleton<GameManager>
             case SceneLevel.Level3:
                 canvas = GameObject.Find("LevelCanvas");
 
-                crossFade = canvas.transform.Find("CrossFade").gameObject;
+                //crossFade = canvas.transform.Find("CrossFade").gameObject;
                 //loadLEvel3
                 currentLevel = 3;
                 mazeRows = 8;
@@ -206,50 +209,13 @@ public class GameManager : Singleton<GameManager>
     void Update()
     {
         checkCurrentScene();
-        /*
-         if (!mainMenuLevel)
-         {
-
-             if ((endLevel || playerDeath) && (Input.GetKeyDown(KeyCode.Space)))
-             {
-
-                 Debug.Log("SAVE");
-                 endLevel = false;
-                 if (!playerDeath)
-                 {
-                     SaveSystem.SaveScore(ScoringSystem.Instance);
-                 }
-                 Debug.Log("LEVEL ENDED" + endLevel);
-                 StartCoroutine(LoadGame.loadNextLevel(crossFade.GetComponent<Animator>()));
-                 // nextLevel();
-
-             }
-             else if (isGameOver && (Input.GetKeyDown(KeyCode.Space)))
-             {
-                // Debug.Log("SAVE");
-                 Debug.Log("END GAME IS HERE");
-                 //LoadGame.load(crossFade.GetComponent<Animator>());
-                 returnMenu();
-
-
-             }
-             if (tempPlayer == null)
-             {
-                 tempPlayer = GameObject.Find("Player(Clone)");
-             }
-             else
-             {
-                 resetGround();
-             }
-         }
-         */
      }
     public void callCheckCorutne()
     {
         StartCoroutine("checkStatusGame");
     }
      
-        public IEnumerator checkStatusGame()
+    public IEnumerator checkStatusGame()
     {
         while (true)
         {
@@ -268,7 +234,7 @@ public class GameManager : Singleton<GameManager>
                         SaveSystem.SaveScore(ScoringSystem.Instance);
                     }
                     Debug.Log("LEVEL ENDED" + endLevel);
-                    StartCoroutine(LoadGame.loadNextLevel(crossFade.GetComponent<Animator>()));
+                    StartCoroutine(LoadGame.loadNextLevel(canvas));
                     // nextLevel();
 
                 }
@@ -277,7 +243,8 @@ public class GameManager : Singleton<GameManager>
                     // Debug.Log("SAVE");
                     Debug.Log("END GAME IS HERE");
                     //LoadGame.load(crossFade.GetComponent<Animator>());
-                    returnMenu();
+                    //returnMenu();
+                    StartCoroutine(LoadGame.loadMainMenuFromGame(canvas));
 
 
                 }
@@ -337,8 +304,7 @@ public class GameManager : Singleton<GameManager>
         tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer = currentSkin;
         tempPlayer.GetComponent<PlayerWithPhysic>().GetComponent<MeshRenderer>().material = currentSkin.skin;
         StartCoroutine(tempPlayer.GetComponent<PlayerWithPhysic>().changeScale());
-        // tempP.GetComponent<Rigidbody>().mass = tempP.typePlayer.mass;
-        //tempPlayer.GetComponent<SkinLoader>().loadSkin(currentPlayerSkin);
+
     }
     /// ---------------------------------------------------------------///
     
@@ -354,7 +320,7 @@ public class GameManager : Singleton<GameManager>
         mazeInstance = Instantiate(maze) as MazeSpawner;
         tempGround = Instantiate(Ground, new Vector3((mazeRows * mazeInstance.GetComponent<MazeSpawner>().CellWidth) / 2, 0, (mazeColums * mazeInstance.GetComponent<MazeSpawner>().CellHeight) / 2), Quaternion.Euler(0, 0, 0)) as GameObject;
         tempGround.GetComponent<RotationWorld>().enabled = false;
-        StartCoroutine(WaitForFade());
+        StartCoroutine(LoadGame.WaitForFade(canvas));
         mazeInstance.transform.parent = tempGround.transform;
         tmpCamera = Instantiate(playerCamera, playerCamera.transform.position, playerCamera.transform.rotation) as Camera;
         tmpCamera.transform.position = new Vector3(transform.position.x, playerCamera.gameObject.GetComponent<FollowPlayer>().height, transform.position.z);
@@ -373,14 +339,14 @@ public class GameManager : Singleton<GameManager>
     }
     public void addPlayer()
     {
-        Debug.Log("ADD PLAYER");
+       // Debug.Log("ADD PLAYER");
         if (!mainMenuLevel)
         {
             tempPlayer = Instantiate(Player, new Vector3(mazeInstance.transform.position.x, 2, mazeInstance.transform.position.z), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             tempPlayer.transform.parent = tempGround.transform;
-            Debug.Log(tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer);
+            //Debug.Log(tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer);
             tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer = currentSkin;
-            Debug.Log(tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer + "  " + tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer.mass);
+           // Debug.Log(tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer + "  " + tempPlayer.GetComponent<PlayerWithPhysic>().typePlayer.mass);
             tempPlayer.GetComponent<PlayerWithPhysic>().GetComponent<MeshRenderer>().material = currentSkin.skin;
             StartCoroutine(tempPlayer.GetComponent<PlayerWithPhysic>().changeScale());
             //tempPlayer.GetComponent<SkinLoader>().loadSkin(currentPlayerSkin);
@@ -398,26 +364,18 @@ public class GameManager : Singleton<GameManager>
         }
 
     }
-    IEnumerator WaitForFade()
-    {
-       // AnimationClip[] clips = crossFade.GetComponent<Animator>().runtimeAnimatorController.animationClips;
-       // Debug.Log(clips);
-
-        yield return new WaitForSeconds(2.30f);
-        tempGround.GetComponent<RotationWorld>().enabled = true;
-
-    }
+ 
     /// ---------------------------------------------------------------///
 
     ///--------------- RESTART GAME FUNCTIONALITY --------------------------------///
     //restart the game scene if either the player is dead or the level is complete
     private void restartGame()
     {
-        if(!playerDeath)
+        Debug.Log("Restart");
+        if (!playerDeath)
          MusicManager.Instance.StopAll();
         Destroy(tmpCamera.gameObject);
         Destroy(tmpLevelManager);
-        Debug.Log("Restart");
         restartLevel = true;
         // endLevel = false;
         playerDeath = false;
@@ -437,7 +395,7 @@ public class GameManager : Singleton<GameManager>
     {
         tempPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
-        StartCoroutine(LoadGame.loadNewMenu(crossFade.GetComponent<Animator>()));
+        StartCoroutine(LoadGame.loadNewMenu(canvas));
         yield return new WaitForSeconds(2f);
         Destroy(mazeInstance.gameObject);
         Destroy(tempGround);
@@ -494,18 +452,14 @@ public class GameManager : Singleton<GameManager>
     {
 
         if (tempPlayer.gameObject.activeSelf == false)
-        {
             tempGround.GetComponent<RotationWorld>().enabled = false;
-            //  Debug.Log("HERE");
-        }
+   
     }
     /// ---------------------------------------------------------------///
     ///LEVEL SELECTION IF PALYER LOST LIFE OR COMPLETED THE LEVEL///
     public void nextLevel()
     {
         endLevel = false;
-        Debug.Log("END: " + endLevel);
-        Debug.Log("LEVEL: " + currentLevel);
         if (playerLifes >= 0)
         {
             switch (currentLevel)
@@ -531,18 +485,23 @@ public class GameManager : Singleton<GameManager>
                     restartGame();
                     break;
                 case 3:
-                    if (!playerDeath)
+                    if (playerDeath)
                     {
-                        Debug.Log("RETURN TO MENU");
-                        returnMenu();
+                        Debug.Log("PLAYER IS DEAD");
+                        typeScene = SceneLevel.Level3;
+                        sceneType();
+                        restartGame();
                     }
                     else
                     {
-                        typeScene = SceneLevel.Level3;
+                        Debug.Log("Level ENDED");
+                        returnMenu();
+                        
+                        //StartCoroutine(LoadGame.loadMainMenuFromGame(canvas));
+                      
                     }
-
-                    sceneType();
-                    restartGame();
+                   
+                    
                     break;
             }
         }
@@ -568,9 +527,9 @@ public class GameManager : Singleton<GameManager>
         MusicManager.Instance.StopAll();
         SFXManager.Instance.StopAll();
         typeScene = SceneLevel.MainMenu;
-        // sceneType();
         playerLifes = 1;
         SceneManager.LoadScene("MainMenu");
+        //StartCoroutine(canvas);
     }
     /// ---------------------------------------------------------------///
 

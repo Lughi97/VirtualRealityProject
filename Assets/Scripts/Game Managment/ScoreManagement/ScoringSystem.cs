@@ -49,13 +49,13 @@ public class ScoringSystem : Singleton<ScoringSystem>
     public void getCurrentLevlCoinScore(int score)
     {
         scoreCoin = score;
-        Debug.Log("CoinScore: " + scoreCoin);
+        //Debug.Log("CoinScore: " + scoreCoin);
     }
     //get the distance score from the player
     public void getCurrentLevelDistanceScore(int score)
     {
         scoreDistance = score;
-        Debug.Log("Score distance: " + scoreDistance);
+        //Debug.Log("Score distance: " + scoreDistance);
     }
     // find the total score
     public void getCurrentLevelTotalScore()
@@ -72,8 +72,6 @@ public class ScoringSystem : Singleton<ScoringSystem>
         else
             foreach (coinValue coinType in listCoins)
             {
-                //Debug.Log(coinType);
-
                 switch (coinType.type)
                 {
                     case TypeScore.bronze:
@@ -101,12 +99,10 @@ public class ScoringSystem : Singleton<ScoringSystem>
         currentScore = 0;
         scoreCoin = 0;
         scoreDistance = 0;
-        // Debug.Log(Score);
     }
     // Update the highscore of the current level
     public void updateLevelHighScore()
     {
-        //Debug.Log("HELLO THERE");
         switch (GameManager.Instance.typeScene)
         {
             case SceneLevel.Level1:

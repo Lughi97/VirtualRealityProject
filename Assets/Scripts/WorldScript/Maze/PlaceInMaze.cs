@@ -119,6 +119,7 @@ public  class  PlaceInMaze:MonoBehaviour
 
     protected static void placeCollectables(GameObject[] collectables,float x, float z, GameObject floorTmp)
     {
+      
         // Debug.Log("USED PLACE COLLECTABLES STATIC FUNCTION");
         int chance = Random.Range(1, 50);
         int randomCollectable = Random.Range(0, 5);

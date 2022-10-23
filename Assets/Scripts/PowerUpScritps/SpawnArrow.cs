@@ -4,27 +4,34 @@ using UnityEngine;
 /// <summary>
 /// Create the arrow 
 /// </summary>
-public class SpawnArrow : MonoBehaviour
+public class SpawnArrow : PowerTemplate
 {
     public GameObject arrow;
     [SerializeField]
     private GameObject tmpArrow;
-    private bool active;
     private float timer = 15f;
     private void Update()
     {
-       
+        checkStatusGame();
     }
-    public IEnumerator spawnArrow()
+    public override void checkStatusGame()
     {
-        if (!active)
+
+        Debug.Log("Player is active= " + GameManager.Instance.tempPlayer.activeSelf);
+        if (GameManager.Instance.isGameOver || GameManager.Instance.playerDeath || !GameManager.Instance.tempPlayer.activeSelf)
         {
-            tmpArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation);
-            active = true;
+            Debug.Log("DESTORYYYYYYYY");
+            ActivePower.powerArrowActive = false;
+            StopCoroutine(coolDown());
+           
         }
-        else { timer = 15f; }
+    }
+    public override IEnumerator coolDown()
+    {
+        tmpArrow = Instantiate(arrow, arrow.transform.position, arrow.transform.rotation);
+        ActivePower.powerArrowActive = true;
         yield return new WaitForSeconds(timer);
-        active = false;
+        ActivePower.powerArrowActive = false;
         Destroy(tmpArrow);
     }
 
