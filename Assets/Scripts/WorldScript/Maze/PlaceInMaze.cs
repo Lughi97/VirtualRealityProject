@@ -220,7 +220,7 @@ public  class  PlaceInMaze:MonoBehaviour
                     case "StartGame":
                         istantiateObjMenuType(parent,element, new Vector3(0, 0, z - cellHeight));
                         break;
-                    case "Settings":
+                    case "Credits":
                         istantiateObjMenuType(parent,element, new Vector3(x - cellWidth, 0, z - cellHeight));
                         break;
                     case "Shop":
@@ -241,7 +241,30 @@ public  class  PlaceInMaze:MonoBehaviour
 
         }
     }
+    protected static void placeCredits(Transform parent, List<GameObject> creditsText)
+    {
+        float x = currentColumns * (cellWidth);// + (AddGaps ? .2f : 0));
+        float z = currentRows * (cellHeight);// + (AddGaps ? .2f : 0));
+        foreach (GameObject element in creditsText)
+        {
+            if (element != null)
+            {
+                switch (element.name)
+                {
+                    case "ArtCredits":
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/2, 0.5f, (z - cellHeight)/2));
+                        break;
+                    case "Developers":
+                        istantiateObjMenuType(parent, element, new Vector3(((x - cellWidth) * 110) / 100, 0.5f, ((z - cellHeight) * 70) / 100));
+                        break;
+                    case "UnimiCredits":
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/2, 0.5f, ((z - cellHeight))));
+                        break;
+                }
+            }
+        }
 
+    }
     protected static void placeHighScores(Transform parent,List<GameObject> levelText, GameObject selctedLevelText)
     {
         //Debug.Log("USED PLACE HIGH SCORES STATIC FUNCTION");

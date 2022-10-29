@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2922076051683348362}
   m_Layer: 0
-  m_Name: Settings
+  m_Name: Credits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Settings
+  m_text: Credits
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edf91234f22447d4d9b31f1164a54a9b, type: 2}
   m_sharedMaterial: {fileID: 38232579268349939, guid: edf91234f22447d4d9b31f1164a54a9b, type: 2}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 5725015787458727624}
   - component: {fileID: 4492322928191274463}
   m_Layer: 0
-  m_Name: SettingTrigger
+  m_Name: CreditsTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 997097751824557872}
   - component: {fileID: 7733210879091703828}
   m_Layer: 0
-  m_Name: SettingC
+  m_Name: CreditsC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

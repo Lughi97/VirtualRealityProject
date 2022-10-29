@@ -13,7 +13,7 @@ public enum SceneLevel
     MainMenu,
     HighScoreMenu,
     Shop,
-    Settings,
+    Credits,
     Tutorial,
     Level1,
     Level2,
@@ -53,6 +53,8 @@ public class GameManager : Singleton<GameManager>
     public bool endLevel = false;
     //if the player lost the game 
     public bool isGameOver = false;
+    //is the game paused
+    public bool isPaused = true;
     // is the player dead
     public bool playerDeath = false;
     public string nameMusic;
@@ -209,6 +211,7 @@ public class GameManager : Singleton<GameManager>
     void Update()
     {
         checkCurrentScene();
+        pausing();
      }
     public void callCheckCorutne()
     {
@@ -295,6 +298,33 @@ public class GameManager : Singleton<GameManager>
             startGame();
         }
     }
+    private void pausing()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !mainMenuLevel && tempPlayer.activeSelf)
+        {
+            Debug.Log("PALYER IS ACTIVE: " + tempPlayer.activeSelf);
+            if (Time.timeScale > 0 && tempPlayer != null)
+            {
+                Time.timeScale = 0;
+                MusicManager.Instance.PauseMusic(nameMusic);
+                SFXManager.Instance.stopSfxPlayer();
+                isPaused = true;
+            }
+            //Debug.Log("PAUSE");
+
+        }
+        else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) && isPaused)
+        {
+            Time.timeScale = 1;
+            // Debug.Log("RESUME");
+            if (tempPlayer != null && tempPlayer.GetComponent<Rigidbody>().velocity.magnitude > 0)
+                SFXManager.Instance.PlaySoundPlayer("RollingBallMainLoop", 0, true);
+            MusicManager.Instance.ResumeMusic(nameMusic, true);
+            isPaused = false;
+        }
+
+    }
+
     // We update the skin of the player form the savefile
     public void updateSkin(PlayerType newSkin)
     {

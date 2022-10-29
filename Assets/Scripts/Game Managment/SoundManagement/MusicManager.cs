@@ -99,5 +99,26 @@ public class MusicManager : Singleton<MusicManager>
         for (int i = 0; i < audioSources.Length; i++)
             audioSources[i].Stop();
     }
+    public void PauseMusic(string name)
+    {
+        if (musicList.ContainsKey(name))
+        {
+
+            musicList[name].Pause();
+
+        }
+    }
+    public void ResumeMusic(string name, bool loop)
+    {
+        if (musicList.ContainsKey(name))
+        {
+
+            if (!musicList[name].isPlaying)
+            {
+                musicList[name].Play();
+                musicList[name].loop = loop;
+            }
+        }
+    }
 }
 

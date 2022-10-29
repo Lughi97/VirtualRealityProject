@@ -33,8 +33,8 @@ public class ChangeScene : MonoBehaviour
                     GameManager.Instance.typeScene = SceneLevel.HighScoreMenu;
                     StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
-                case "SettingTrigger":
-                    GameManager.Instance.typeScene = SceneLevel.Settings;
+                case "CreditsTrigger":
+                    GameManager.Instance.typeScene = SceneLevel.Credits;
                     StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
                 case "ShopTrigger":

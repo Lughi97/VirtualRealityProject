@@ -52,8 +52,12 @@ public class MazeSpawner : PlaceInMaze
     [Header("Shop Menu")]
     [SerializeField]
     private GameObject playerSphereType;
-  //  [SerializeField]
-   // private List<PlayerPrefs> skins;
+
+    [Header("CreditsMenu")]
+    [SerializeField]
+    private List<GameObject> credits;
+    //  [SerializeField]
+    // private List<PlayerPrefs> skins;
 
     // Start is called before the first frame update
     void Start()
@@ -101,13 +105,15 @@ public class MazeSpawner : PlaceInMaze
                 tmp.transform.parent = transform;
 
 
-                if (row != 0 && row != Rows && column != 0 && column != Columns)
-                {
+                if ((x == 0 && z == 0) || (x == (Columns * CellWidth) - CellWidth && z == (Rows * CellHeight) - CellHeight) || (x == 0 && z == (Rows * CellHeight) - CellHeight) || (x == (Columns * CellWidth) - CellWidth && z == 0))
+                    Debug.Log("DO NOTHING");
+                else
+                 {
                     //placeBlackHoles(x,z,tmp)
                     PlaceInMaze.placeBlackHoles(BlackHoles,x, z, tmp);
                     //placeCollectables(x, z, tmp);
                     PlaceInMaze.placeCollectables(collectable, x, z, tmp);
-                }
+                 }
                 PlaceInMaze.placeWalls(transform,Wall,x, z, cell);
             }
 
@@ -168,8 +174,9 @@ public class MazeSpawner : PlaceInMaze
                 PlaceInMaze.placeHighScores(transform, LevelText, singleScore);
                 PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
                 break;
-            case SceneLevel.Settings:
-                Debug.Log("ADD SETTINGS");
+            case SceneLevel.Credits:
+                Debug.Log("ADD Credits");
+                PlaceInMaze.placeCredits(transform, credits);
                 PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
                 break;
             case SceneLevel.Shop:
