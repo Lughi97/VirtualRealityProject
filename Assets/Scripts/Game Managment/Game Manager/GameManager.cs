@@ -236,7 +236,7 @@ public class GameManager : Singleton<GameManager>
                     {
                         SaveSystem.SaveScore(ScoringSystem.Instance);
                     }
-                    Debug.Log("LEVEL ENDED" + endLevel);
+                   // Debug.Log("LEVEL ENDED" + endLevel);
                     StartCoroutine(LoadGame.loadNextLevel(canvas));
                     // nextLevel();
 
@@ -262,8 +262,8 @@ public class GameManager : Singleton<GameManager>
  
                
             }
-            Debug.Log("THIS IS LOOPING");
-            Debug.Log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+           // Debug.Log("THIS IS LOOPING");
+           // Debug.Log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
             if (Input.GetKeyUp(KeyCode.Space))
               {
                   Debug.Log("STOP");
@@ -309,6 +309,18 @@ public class GameManager : Singleton<GameManager>
                 MusicManager.Instance.PauseMusic(nameMusic);
                 SFXManager.Instance.stopSfxPlayer();
                 isPaused = true;
+                if (ScoreCurrentLevel.instance != null)
+                {
+                    ScoreCurrentLevel.instance.BoardMenu.SetActive(true);
+                    ScoreCurrentLevel.instance.BoardMenu.transform.Find("PauseText").gameObject.SetActive(true);
+                    if (ScoreCurrentLevel.instance.needToComplete.gameObject.activeSelf)
+                    {
+                        StopCoroutine(ScoreCurrentLevel.instance.notLevelComplete());
+                        ScoreCurrentLevel.instance.needToComplete.gameObject.SetActive(false);
+                    }
+
+                        
+                }
             }
             //Debug.Log("PAUSE");
 
@@ -319,6 +331,12 @@ public class GameManager : Singleton<GameManager>
             // Debug.Log("RESUME");
             if (tempPlayer != null && tempPlayer.GetComponent<Rigidbody>().velocity.magnitude > 0)
                 SFXManager.Instance.PlaySoundPlayer("RollingBallMainLoop", 0, true);
+            if (ScoreCurrentLevel.instance != null)
+            {
+                ScoreCurrentLevel.instance.BoardMenu.SetActive(false);
+                ScoreCurrentLevel.instance.BoardMenu.transform.Find("PauseText").gameObject.SetActive(false);
+            }
+            
             MusicManager.Instance.ResumeMusic(nameMusic, true);
             isPaused = false;
         }
@@ -458,13 +476,13 @@ public class GameManager : Singleton<GameManager>
     {
         //if (tempPlayer.gameObject.GetComponent<PlayerWithPhysic>().playerDeath)
 
-
+       
         if (playerLifes <= 0)
         {
             Debug.Log("RETURN TO MENU GAME OVER");
 
             isGameOver = true;
-
+           
         }
         else
         {
@@ -525,10 +543,7 @@ public class GameManager : Singleton<GameManager>
                     else
                     {
                         Debug.Log("Level ENDED");
-                        returnMenu();
-                        
-                        //StartCoroutine(LoadGame.loadMainMenuFromGame(canvas));
-                      
+                        returnMenu(); 
                     }
                    
                     

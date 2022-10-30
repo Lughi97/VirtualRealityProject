@@ -28,6 +28,7 @@ public static class LoadGame
     // load the new level in the same scene 
     public static IEnumerator loadNextLevel(GameObject canvas)
     {
+        Debug.Log("FADE IN");
         crossFade = canvas.transform.Find("CrossFade").gameObject.GetComponent<Animator>();
         crossFade.SetTrigger("Start");
         AnimatorClipInfo[] clips = crossFade.GetCurrentAnimatorClipInfo(0);
@@ -37,13 +38,14 @@ public static class LoadGame
         //Access the current length of the clip
         yield return new WaitForSeconds(lenght);
         GameManager.Instance.tempGround.GetComponent<RotationWorld>().enabled =false ;
+        Debug.Log("FADE OUT");
         crossFade.SetTrigger("Start");
-
-        yield return new WaitForSeconds(1);
-
+       
+        yield return new WaitForSeconds(lenght-0.1f);
         GameManager.Instance.nextLevel();
-       // yield return new WaitForSeconds(1.5f);
-        
+
+        // yield return new WaitForSeconds(1.5f);
+
 
     }
 

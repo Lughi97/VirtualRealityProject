@@ -121,7 +121,7 @@ public  class  PlaceInMaze:MonoBehaviour
     {
       
         // Debug.Log("USED PLACE COLLECTABLES STATIC FUNCTION");
-        int chance = Random.Range(1, 50);
+        int chance = Random.Range(1, 80);
         int randomCollectable = Random.Range(0, 5);
         if (collectables != null && x != 0 && z != 0)
         {
@@ -133,21 +133,20 @@ public  class  PlaceInMaze:MonoBehaviour
             switch (randomCollectable)
             {
                 case 0:
-                    if (chance % 2 == 0)
-                    {
+                   
                         tmpCoin = Instantiate(collectables[0], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmpCoin.transform.parent = floorTmp.transform;
-                    }
+                   
                     break;
                 case 1:
-                    if (chance % 3 == 0)
+                    if (chance % 2 == 0)
                     {
                         tmpCoin = Instantiate(collectables[1], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmpCoin.transform.parent = floorTmp.transform;
                     }
                     break;
                 case 2:
-                    if (chance % 4 == 0)
+                    if (chance % 3 == 0)
                     {
                         tmpCoin = Instantiate(collectables[2], new Vector3(floorTmp.transform.position.x, 2f, floorTmp.transform.position.z), Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmpCoin.transform.parent = floorTmp.transform;
@@ -252,7 +251,7 @@ public  class  PlaceInMaze:MonoBehaviour
                 switch (element.name)
                 {
                     case "ArtCredits":
-                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/2, 0.5f, (z - cellHeight)/2));
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/3, 0.5f, (z - cellHeight)/2));
                         break;
                     case "Developers":
                         istantiateObjMenuType(parent, element, new Vector3(((x - cellWidth) * 110) / 100, 0.5f, ((z - cellHeight) * 70) / 100));
