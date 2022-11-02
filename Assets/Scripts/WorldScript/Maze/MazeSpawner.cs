@@ -132,11 +132,11 @@ public class MazeSpawner : PlaceInMaze
                 //      tmp.transform.parent = transform;
                 //      break;
                 case 1:
-                    tmp = Instantiate(GoalPrefab, new Vector3(0, 0, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
+                    tmp = Instantiate(GoalPrefab, new Vector3(0, 0.2f, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                     break;
                 case 2:
-                    tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
+                    tmp = Instantiate(GoalPrefab, new Vector3(x - CellWidth, 0.2f, z - CellHeight), GoalPrefab.transform.rotation) as GameObject;
                     tmp.transform.parent = transform;
                     break;
             }

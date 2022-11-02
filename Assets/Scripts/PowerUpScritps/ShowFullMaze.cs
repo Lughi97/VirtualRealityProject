@@ -57,6 +57,7 @@ public class ShowFullMaze : PowerTemplate
             Debug.Log("THIS IS TEST TO Stop the powerup");
             mainCamera.enabled = true;
             power.enabled = false;
+            ActivePower.powerCameraActive = false;
             StopCoroutine(coolDown());
         }
         //throw new System.NotImplementedException();
