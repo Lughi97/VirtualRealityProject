@@ -154,7 +154,9 @@ public class PlayerWithPhysic : MonoBehaviour
 
 
     }
-
+    private bool IsGrounded() {
+        return Physics.Raycast(transform.position, -Vector3.up,2.5f);
+     }
     private void OnCollisionEnter(Collision collision)
     {
         foreach (ContactPoint contact in collision.contacts)

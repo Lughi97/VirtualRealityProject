@@ -228,6 +228,9 @@ public  class  PlaceInMaze:MonoBehaviour
                     case "LevelScore":
                         istantiateObjMenuType(parent,element, new Vector3(x - cellWidth, 0, 0));
                         break;
+                    case "Tutorial":
+                        istantiateObjMenuType(parent, element, new Vector3(0, 0, z - (2 * cellHeight)));
+                        break;
 
                     case "Quit":
                         istantiateObjMenuType(parent,element, Vector3.zero);
@@ -251,10 +254,7 @@ public  class  PlaceInMaze:MonoBehaviour
                 switch (element.name)
                 {
                     case "ArtCredits":
-                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/3, 0.5f, (z - cellHeight)/2));
-                        break;
-                    case "Developers":
-                        istantiateObjMenuType(parent, element, new Vector3(((x - cellWidth) * 110) / 100, 0.5f, ((z - cellHeight) * 70) / 100));
+                        istantiateObjMenuType(parent, element, new Vector3(((x - cellWidth)/3)+3.8f, 0.5f, (z - cellHeight)/2));
                         break;
                     case "UnimiCredits":
                         istantiateObjMenuType(parent, element, new Vector3((x - cellWidth)/2, 0.5f, ((z - cellHeight))));
@@ -336,6 +336,43 @@ public  class  PlaceInMaze:MonoBehaviour
                 }
             }
         }
+    }
+    protected static void placeTutorialElements(Transform parent, List<GameObject> obj)
+    { Debug.Log("HEELO");
+        //Debug.Log("USED PLACE MENU COMPONETNS STATIC FUNCTION");
+        float x = currentColumns * (cellWidth);// + (AddGaps ? .2f : 0));
+        float z = currentRows * (cellHeight);// + (AddGaps ? .2f : 0));
+        foreach (GameObject element in obj)
+        {
+            if (element != null)
+            {
+                switch (element.name)
+                {
+                    case "ArrowPowerUpT":
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth) , 0.5f, 23f));
+                        break;
+                    case "CameraPowerUpT":
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth), 0.5f, 15f));
+                        break;
+                    case "CoinT":
+                        istantiateObjMenuType(parent, element, new Vector3(0f , 2f, 30f));
+                        break;
+                    case "CreateT":
+                        istantiateObjMenuType(parent, element, new Vector3(0f , 2.5f, (z - cellHeight) / 2f));
+                        break;
+                    case "SpeedUpPowerT":
+                        istantiateObjMenuType(parent, element, new Vector3(0f, 0.5f, 5f));
+                        break;
+                    case "BackHoleT":
+                        istantiateObjMenuType(parent, element, new Vector3((x - cellWidth), 1f, 35f));
+                        break;
+                    case "GoalT":
+                        istantiateObjMenuType(parent, element, new Vector3(0f, 1f, ((z - cellHeight))));
+                        break;
+                }
+            }
+        }
+
     }
 
     private static void CreateList(Transform parent,GameObject levelScore,GameObject scoreSelected ,Vector3 position)

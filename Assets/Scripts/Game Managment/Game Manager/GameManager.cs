@@ -169,8 +169,8 @@ public class GameManager : Singleton<GameManager>
 
                // crossFade = canvas.transform.Find("CrossFade").gameObject;
                 currentLevel = 1;
-                mazeRows = 4;
-                mazeColums = 4;
+                mazeRows = 5;
+                mazeColums = 5;
                 nameMusic = "Level1Music";
                 heightPowerCamera = 100;
                 break;
@@ -179,8 +179,8 @@ public class GameManager : Singleton<GameManager>
 
                 //crossFade = canvas.transform.Find("CrossFade").gameObject;
                 currentLevel = 2;
-                mazeRows = 6;
-                mazeColums = 6;
+                mazeRows = 7;
+                mazeColums = 7;
                 nameMusic = "Level2Music";
                 heightPowerCamera = 200;
                 //loadLevel2
@@ -191,8 +191,8 @@ public class GameManager : Singleton<GameManager>
                 //crossFade = canvas.transform.Find("CrossFade").gameObject;
                 //loadLEvel3
                 currentLevel = 3;
-                mazeRows = 8;
-                mazeColums = 8;
+                mazeRows = 10;
+                mazeColums = 10;
                 heightPowerCamera = 300;
                 nameMusic = "Level3Music";
                 break;

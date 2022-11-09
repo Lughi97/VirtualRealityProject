@@ -41,6 +41,10 @@ public class ChangeScene : MonoBehaviour
                     GameManager.Instance.typeScene = SceneLevel.Shop;
                     StartCoroutine(GameManager.Instance.changeMenuScene());
                     break;
+                case "TutorialTrigger":
+                    GameManager.Instance.typeScene = SceneLevel.Tutorial;
+                    StartCoroutine(GameManager.Instance.changeMenuScene());
+                    break;
                 case "ReturnMenuTrigger":
                     GameManager.Instance.typeScene = SceneLevel.MainMenu;
                     StartCoroutine(GameManager.Instance.changeMenuScene());

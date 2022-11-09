@@ -53,6 +53,10 @@ public class MazeSpawner : PlaceInMaze
     [SerializeField]
     private GameObject playerSphereType;
 
+    [Header("Tutorial Menu")]
+    [SerializeField]
+    private List<GameObject> worldObj;
+
     [Header("CreditsMenu")]
     [SerializeField]
     private List<GameObject> credits;
@@ -177,6 +181,11 @@ public class MazeSpawner : PlaceInMaze
             case SceneLevel.Credits:
                 Debug.Log("ADD Credits");
                 PlaceInMaze.placeCredits(transform, credits);
+                PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
+                break;
+            case SceneLevel.Tutorial:
+                Debug.Log("ADD TUtorial");
+                PlaceInMaze.placeTutorialElements(transform, worldObj);
                 PlaceInMaze.placeReturnMenu(transform, menuReturn, position);
                 break;
             case SceneLevel.Shop:
